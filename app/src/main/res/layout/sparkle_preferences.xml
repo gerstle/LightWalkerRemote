@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robobunny="http://robobunny.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:key="sparkle_preferences">
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="5"
+        android:key="sparkleFadeRate"
+        android:max="60"
+        android:title="fade rate"
+        robobunny:min="1"
+        robobunny:unitsLeft=""
+        robobunny:unitsRight="" />
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="525"
+        android:key="sparkleFlashLength"
+        android:max="1000"
+        android:title="length of flash time (ms)"
+        robobunny:min="0"
+        robobunny:unitsLeft=""
+        robobunny:unitsRight="" />
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="575"
+        android:key="sparkleSparkleLength"
+        android:max="2000"
+        android:title="length of sparkle time (ms)"
+        robobunny:min="100"
+        robobunny:unitsLeft=""
+        robobunny:unitsRight="" />
+
+    <com.inappropirates.util.ColorPickerPreference
+        android:key="sparkleFootFlashColor"
+        android:title="foot flash color" />
+
+    <com.inappropirates.util.ColorPickerPreference
+        android:key="sparkleSparkleColor"
+        android:title="sparkle color" />
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="50"
+        android:key="sparkleMinValue"
+        android:max="255"
+        android:title="Min Brightness"
+        robobunny:min="0" />
+</PreferenceScreen>

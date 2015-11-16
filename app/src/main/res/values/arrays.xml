@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pulseColorStyles">
+        <item>static</item>
+        <item>cycle</item>
+        <item>random</item>
+    </string-array>
+
+    <string-array name="pulseColorStylesValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="rainbowModes">
+        <item>single</item>
+        <item>double</item>
+        <item>rotate</item>
+        <item>rise</item>
+    </string-array>
+
+    <string-array name="rainbowModeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="equalizerModes">
+        <item>static color</item>
+        <item>single rainbow</item>
+        <item>double rainbow</item>
+    </string-array>
+
+    <string-array name="equalizerModeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

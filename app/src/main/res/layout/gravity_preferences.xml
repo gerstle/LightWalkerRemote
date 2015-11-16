@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robobunny="http://robobunny.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:key="equalizer_preferences">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="gravityRotate"
+        android:title="rotate?" />
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="50"
+        android:key="gravityMinValue"
+        android:max="255"
+        android:title="Min Brightness"
+        robobunny:min="0" />
+</PreferenceScreen>
