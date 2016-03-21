@@ -22,6 +22,6 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(mode.getLayout());
+        addPreferencesFromResource(mode.getResource());
     }
 }

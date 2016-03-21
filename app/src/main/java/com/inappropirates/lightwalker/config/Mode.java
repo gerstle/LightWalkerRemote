@@ -6,10 +6,10 @@ public class Mode {
 
     private String name;
     private Class intent;
-    private int resource;
+    private Integer resource;
     private Boolean enabled;
 
-    public Mode(String name, Class intent, int resource, Boolean enabled) {
+    public Mode(String name, Class intent, Integer resource, Boolean enabled) {
         this.name = name;
         this.intent = intent;
         this.resource = resource;
@@ -35,11 +35,11 @@ public class Mode {
         this.intent = intent;
     }
 
-    public int getResource() {
+    public Integer getResource() {
         return resource;
     }
 
-    public void setResource(int resource) {
+    public void setResource(Integer resource) {
         this.resource = resource;
     }
 
