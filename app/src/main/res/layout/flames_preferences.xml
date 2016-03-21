@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robobunny="http://robobunny.com"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:key="flames_preferences">
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="800"
+        android:key="flamesStepMillis"
+        android:max="2000"
+        android:title="step length (millis)"
+        robobunny:min="100" />
+
+    <com.robobunny.SeekBarPreference
+        android:defaultValue="30"
+        android:key="flamesDelay"
+        android:max="500"
+        android:title="Delay"
+        robobunny:min="0" />
+
+</PreferenceScreen>

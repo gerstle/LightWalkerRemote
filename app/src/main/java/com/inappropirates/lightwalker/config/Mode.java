@@ -1,12 +1,22 @@
 package com.inappropirates.lightwalker.config;
 
-public class Mode {
-    private String name;
-    private int resource;
+import android.content.Context;
 
-    public Mode(String name, int resource) {
+public class Mode {
+
+    private String name;
+    private Class intent;
+    private int resource;
+    private Boolean enabled;
+
+    public Mode(String name, Class intent, int resource, Boolean enabled) {
         this.name = name;
+        this.intent = intent;
         this.resource = resource;
+        this.enabled = enabled;
+    }
+
+    public void init(Context context) {
     }
 
     public String getName() {
@@ -17,12 +27,27 @@ public class Mode {
         this.name = name;
     }
 
-    public int getResource()
-    {
+    public Class getIntent() {
+        return intent;
+    }
+
+    public void setIntent(Class intent) {
+        this.intent = intent;
+    }
+
+    public int getResource() {
         return resource;
     }
 
     public void setResource(int resource) {
         this.resource = resource;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
