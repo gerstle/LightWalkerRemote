@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+
+import com.inappropirates.lightwalker.config.ColorButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,9 @@ public class ColorGridAdapter extends BaseAdapter
 {
     private Context context;
     private static final int COLOR_COUNT = 34;
+    private View.OnClickListener onColorClickListener;
+
+
     private List<Color> colors = new ArrayList<Color>(){
         {
             add(new Color("red", 0, 255, 255, android.graphics.Color.RED));
@@ -37,9 +41,10 @@ public class ColorGridAdapter extends BaseAdapter
     };
 
 
-    public ColorGridAdapter(Context context)
+    public ColorGridAdapter(Context context, View.OnClickListener onColorClickListener)
     {
         this.context = context;
+        this.onColorClickListener = onColorClickListener;
     }
 
     @Override
@@ -63,15 +68,14 @@ public class ColorGridAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        Button button;
+        ColorButton button;
         if (convertView == null)
         {
-            button = new Button(context);
-            button.setBackgroundColor(colors.get(position).getAndroidColor());
-            button.setText(colors.get(position).getName());
+            button = new ColorButton(context, colors.get(position));
+            button.setOnClickListener(onColorClickListener);
         } else
         {
-            button = (Button) convertView;
+            button = (ColorButton) convertView;
         }
 
         return button;
