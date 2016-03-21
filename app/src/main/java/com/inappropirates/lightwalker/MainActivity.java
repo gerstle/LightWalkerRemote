@@ -10,9 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.inappropirates.lightwalker.config.Config;
+
 public class MainActivity extends AppCompatActivity {
     ListView modeListView;
-    String[] modes = {"asdf", "blah", "nope"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         modeListView = (ListView) findViewById(R.id.modeListView);
-        modeListView.setAdapter(new ModeListAdapter(this, modes));
+        modeListView.setAdapter(new ModeListAdapter(this, Config.modes));
     }
 
     @Override

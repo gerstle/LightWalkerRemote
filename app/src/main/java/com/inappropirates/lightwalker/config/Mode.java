@@ -2,11 +2,11 @@ package com.inappropirates.lightwalker.config;
 
 public class Mode {
     private String name;
-    private Integer view;
+    private int resource;
 
-    public Mode(String name, Integer view) {
+    public Mode(String name, int resource) {
         this.name = name;
-        this.view = view;
+        this.resource = resource;
     }
 
     public String getName() {
@@ -17,11 +17,12 @@ public class Mode {
         this.name = name;
     }
 
-    public Integer getView() {
-        return view;
+    public int getResource()
+    {
+        return resource;
     }
 
-    public void setView(Integer view) {
-        this.view = view;
+    public void setResource(int resource) {
+        this.resource = resource;
     }
 }

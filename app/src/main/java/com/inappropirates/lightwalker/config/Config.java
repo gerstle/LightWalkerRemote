@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
-    List<Mode> modes = new ArrayList<Mode>() {
+    public static List<Mode> modes = new ArrayList<Mode>() {
         {
             add(new Mode("pulse", R.layout.pulse_preferences_layout));
+            add(new Mode("test2", R.layout.pulse_preferences_layout));
         }
     };
-
 }

@@ -9,20 +9,22 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.inappropirates.lightwalker.config.Mode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModeListAdapter extends BaseAdapter {
     private static LayoutInflater inflater;
-    private List<Row> modes;
+    private List<Row> modeRows;
     private Context context;
 
-    public ModeListAdapter(MainActivity context, String[] modeNames) {
+    public ModeListAdapter(MainActivity context, List<Mode> modes) {
         this.context = context;
 
-        this.modes = new ArrayList<>(modeNames.length);
-        for (String mode : modeNames)
-            modes.add(new Row(mode));
+        this.modeRows = new ArrayList<>(modes.size());
+        for (Mode mode : modes)
+            modeRows.add(new Row(mode.getName(), mode.getResource()));
 
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,12 +32,12 @@ public class ModeListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return modes.size();
+        return modeRows.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return modes.get(position);
+        return modeRows.get(position);
     }
 
     @Override
@@ -45,41 +47,51 @@ public class ModeListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Row row = modes.get(position);
-        row.setView(inflater.inflate(R.layout.mode_list_layout, null));
+        final Row row = modeRows.get(position);
+        row.setListView(inflater.inflate(R.layout.mode_list_layout, null));
 
-        row.setRadioButton((RadioButton) row.getView().findViewById(R.id.modeRadioButton));
+        row.setRadioButton((RadioButton) row.getListView().findViewById(R.id.modeRadioButton));
         row.getRadioButton().setText(row.getName());
         row.getRadioButton().setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RadioButton buttonView = (RadioButton)v;
-                        for (Row mode : modes)
+                        RadioButton buttonView = (RadioButton) v;
+                        for (Row mode : modeRows)
                             if (!buttonView.equals(mode.getRadioButton()))
                                 mode.getRadioButton().setChecked(false);
                         buttonView.setChecked(true);
                     }
                 });
 
-        row.getView().setOnClickListener(new View.OnClickListener() {
+        row.setConfigButton((Button) row.getListView().findViewById(R.id.configButton));
+        row.getConfigButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context, "You Clicked " + row.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "configuring " + row.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        return row.getView();
+//        row.getListView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Toast.makeText(context, "You Clicked " + row.getName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        return row.getListView();
     }
 
     private class Row {
         private String name;
-        private View view;
+        private View listView;
+        private int configResource;
         private RadioButton radioButton;
         private Button configButton;
 
-        public Row(String name) {
+        public Row(String name, int configResource) {
             this.name = name;
+            this.configResource = configResource;
         }
 
         public String getName() {
@@ -90,12 +102,20 @@ public class ModeListAdapter extends BaseAdapter {
             this.name = name;
         }
 
-        public View getView() {
-            return view;
+        public View getListView() {
+            return listView;
         }
 
-        public void setView(View view) {
-            this.view = view;
+        public void setListView(View listView) {
+            this.listView = listView;
+        }
+
+        public int getConfigResource() {
+            return configResource;
+        }
+
+        public void setConfigResource(int configResource) {
+            this.configResource = configResource;
         }
 
         public RadioButton getRadioButton() {
