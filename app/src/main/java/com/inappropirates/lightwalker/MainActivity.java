@@ -1,19 +1,25 @@
 package com.inappropirates.lightwalker;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.inappropirates.lightwalker.config.Config;
+import com.inappropirates.lightwalker.ui.BTStatusHandler;
+import com.inappropirates.lightwalker.ui.ModeListAdapter;
+import com.inappropirates.lightwalker.bluetooth.BluetoothBoss;
 
 public class MainActivity extends AppCompatActivity {
     ListView modeListView;
+    BluetoothBoss btBoss;
+    Handler btStatusHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +28,43 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final Button bluetoothButton = (Button) findViewById(R.id.bluetooth_button);
+        bluetoothButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                bluetoothButton.setBackgroundColor(Color.YELLOW);
+                bluetoothButton.setEnabled(false);
+                btBoss.connect();
             }
         });
 
         modeListView = (ListView) findViewById(R.id.modeListView);
         modeListView.setAdapter(new ModeListAdapter(this, Config.modes));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        btBoss = new BluetoothBoss(getApplicationContext(), new BTStatusHandler(this, (Button) findViewById(R.id.bluetooth_button)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // todo check BT status
+        //btBoss.status();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (btBoss != null) {
+            btBoss.stop();
+            btBoss = null;
+        }
     }
 
     @Override
@@ -56,4 +88,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

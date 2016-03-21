@@ -1,8 +1,7 @@
 package com.inappropirates.lightwalker.config;
 
-import com.inappropirates.lightwalker.MandyMode;
 import com.inappropirates.lightwalker.R;
-import com.inappropirates.lightwalker.SettingsActivity;
+import com.inappropirates.lightwalker.ui.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;

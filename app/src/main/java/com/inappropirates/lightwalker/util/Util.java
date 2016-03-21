@@ -1,8 +1,8 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.util;
 
 public class Util
 {
-    public static float Map(float value, float fromLow, float fromHigh, float toLow, float toHigh) {
+    public static float map(float value, float fromLow, float fromHigh, float toLow, float toHigh) {
         return toLow + (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow);
     }
 

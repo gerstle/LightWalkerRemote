@@ -1,8 +1,9 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.config;
 
 import android.content.Context;
 import android.content.Intent;
 
+import com.inappropirates.lightwalker.MandyActivity;
 import com.inappropirates.lightwalker.config.Mode;
 
 public class MandyMode extends Mode

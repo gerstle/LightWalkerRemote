@@ -1,4 +1,4 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
+import com.inappropirates.lightwalker.util.AppUtil;
+import com.inappropirates.lightwalker.MainActivity;
+import com.inappropirates.lightwalker.R;
 import com.inappropirates.lightwalker.config.Mode;
 
 import java.util.ArrayList;

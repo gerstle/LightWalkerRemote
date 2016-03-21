@@ -1,4 +1,4 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.ui;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

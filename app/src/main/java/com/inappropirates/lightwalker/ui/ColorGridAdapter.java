@@ -1,4 +1,4 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.ui;
 
 import android.content.Context;
 import android.view.View;

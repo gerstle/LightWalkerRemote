@@ -1,4 +1,6 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.ui;
+
+import com.inappropirates.lightwalker.util.Util;
 
 /***
  * android Color's HSV is 0-360, but LED stuff is all 0-255...
@@ -82,9 +84,9 @@ public class Color
         else
         {
             float[] androidColorHSV = new float[]{
-                    Util.Map(hue, 0, 255, 0, 360),
-                    Util.Map(sat, 0, 255, 0, 360),
-                    Util.Map(val, 0, 255, 0, 360),
+                    Util.map(hue, 0, 255, 0, 360),
+                    Util.map(sat, 0, 255, 0, 360),
+                    Util.map(val, 0, 255, 0, 360),
             };
             return android.graphics.Color.HSVToColor(androidColorHSV);
         }

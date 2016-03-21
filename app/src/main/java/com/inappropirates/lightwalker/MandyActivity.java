@@ -8,6 +8,7 @@ import android.widget.GridView;
 import android.widget.RadioButton;
 
 import com.inappropirates.lightwalker.config.ColorButton;
+import com.inappropirates.lightwalker.ui.ColorGridAdapter;
 
 public class MandyActivity extends AppCompatActivity {
     @Override

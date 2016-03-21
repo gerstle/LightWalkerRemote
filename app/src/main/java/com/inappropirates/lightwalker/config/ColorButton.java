@@ -3,7 +3,7 @@ package com.inappropirates.lightwalker.config;
 import android.content.Context;
 import android.widget.Button;
 
-import com.inappropirates.lightwalker.Color;
+import com.inappropirates.lightwalker.ui.Color;
 
 public class ColorButton extends Button {
     private Color color;

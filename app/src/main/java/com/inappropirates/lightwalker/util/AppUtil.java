@@ -1,4 +1,4 @@
-package com.inappropirates.lightwalker;
+package com.inappropirates.lightwalker.util;
 
 public class AppUtil {
     // TODO - should this be here?
@@ -6,7 +6,7 @@ public class AppUtil {
     public static final String TAG = "LightWalkerRemote";
 
     // TODO - move this to bluetooth specific stuff?
-    // Message types sent from the BluetoothChatService Handler
+    // Message types sent from the BluetoothBoss Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
