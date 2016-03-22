@@ -15,16 +15,15 @@ import android.widget.TextView;
 
 import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.ui.AppStatusHandler;
-import com.inappropirates.lightwalker.ui.BluetoothStatusHandler;
+import com.inappropirates.lightwalker.bluetooth.BluetoothHandler;
 import com.inappropirates.lightwalker.ui.ModeListAdapter;
 import com.inappropirates.lightwalker.bluetooth.BluetoothBoss;
-import com.inappropirates.lightwalker.ui.SettingsActivity;
 import com.inappropirates.lightwalker.util.AppUtil;
 
 public class MainActivity extends AppCompatActivity {
     ListView modeListView;
     BluetoothBoss btBoss;
-    Handler bluetootStatusHandler;
+    Handler bluetoothHandler;
     AppStatusHandler appStatusHandler;
     Context context;
 
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothButton.setBackgroundColor(android.graphics.Color.argb(255, 246, 163, 85));
                 bluetoothButton.setEnabled(false);
 
-                btBoss = new BluetoothBoss(context, bluetootStatusHandler);
+                btBoss = new BluetoothBoss(context, bluetoothHandler);
                 btBoss.connect();
             }
         });
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
         appStatusHandler = new AppStatusHandler((TextView)findViewById(R.id.statusTextView));
-        bluetootStatusHandler = new BluetoothStatusHandler((Button) findViewById(R.id.bluetooth_button), appStatusHandler);
+        bluetoothHandler = new BluetoothHandler((Button) findViewById(R.id.bluetooth_button), appStatusHandler, context);
     }
 
     @Override

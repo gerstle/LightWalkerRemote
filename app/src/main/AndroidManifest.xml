@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="LightWalker Mode Settings" />
         <activity
             android:name=".MandyActivity"

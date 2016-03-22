@@ -31,7 +31,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.inappropirates.lightwalker.ui.BluetoothStatusHandler;
 import com.inappropirates.lightwalker.util.AppUtil;
 
 import java.io.IOException;
@@ -40,7 +39,8 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.UUID;
 
-public class BluetoothBoss {
+public class BluetoothBoss
+{
     private static final String NAME = "LW";
     private static final UUID MY_UUID_SECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -59,34 +59,39 @@ public class BluetoothBoss {
     public static final int STATE_CONNECTED = 3;
     public static final int STATE_DISCONNECTED = 4;
 
-    public BluetoothBoss(Context context, Handler handler) {
+    public BluetoothBoss(Context context, Handler handler)
+    {
         adapter = BluetoothAdapter.getDefaultAdapter();
         state = STATE_NONE;
         this.context = context;
         this.handler = handler;
     }
 
-    private synchronized void setState(int state) {
+    private synchronized void setState(int state)
+    {
         Log.d(AppUtil.TAG, "setState() " + this.state + " -> " + state);
         this.state = state;
 
         handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), state, -1).sendToTarget();
     }
 
-    public synchronized int getState() {
+    public synchronized int getState()
+    {
         return state;
     }
 
-    public synchronized void connect() {
+    public synchronized void connect()
+    {
         Set<BluetoothDevice> devices = adapter.getBondedDevices();
         for (BluetoothDevice device : devices)
             if (device.getAddress().equals("00:18:96:B0:01:8F"))
                 this.device = device;
 
-        if (device == null) {
+        if (device == null)
+        {
             Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
             Bundle bundle = new Bundle();
-            bundle.putString(BluetoothStatusHandler.TOAST, "LightWalker is MIA");
+            bundle.putString(BluetoothHandler.TOAST, "LightWalker is MIA");
             msg.setData(bundle);
             handler.sendMessage(msg);
 
@@ -97,15 +102,18 @@ public class BluetoothBoss {
         Log.d(AppUtil.TAG, "connecting to: " + device);
 
         // Cancel any thread attempting to make a connection
-        if (state == STATE_CONNECTING) {
-            if (connectThread != null) {
+        if (state == STATE_CONNECTING)
+        {
+            if (connectThread != null)
+            {
                 connectThread.cancel();
                 connectThread = null;
             }
         }
 
         // Cancel any thread currently running a connection
-        if (connectedThread != null) {
+        if (connectedThread != null)
+        {
             connectedThread.cancel();
             connectedThread = null;
         }
@@ -123,17 +131,20 @@ public class BluetoothBoss {
      * @param device The BluetoothDevice that has been connected
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice
-            device, final String socketType) {
+            device, final String socketType)
+    {
         Log.d(AppUtil.TAG, "connected, Socket Type:" + socketType);
 
         // Cancel the thread that completed the connection
-        if (connectThread != null) {
+        if (connectThread != null)
+        {
             connectThread.cancel();
             connectThread = null;
         }
 
         // Cancel any thread currently running a connection
-        if (connectedThread != null) {
+        if (connectedThread != null)
+        {
             connectedThread.cancel();
             connectedThread = null;
         }
@@ -145,23 +156,26 @@ public class BluetoothBoss {
         // Send the name of the connected device back to the UI Activity
         Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_DEVICE_NAME.ordinal());
         Bundle bundle = new Bundle();
-        bundle.putString(BluetoothStatusHandler.DEVICE_NAME, device.getName());
+        bundle.putString(BluetoothHandler.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         handler.sendMessage(msg);
 
         setState(STATE_CONNECTED);
     }
 
-    public synchronized void stop() {
+    public synchronized void stop()
+    {
         Log.d(AppUtil.TAG, "stop");
 
-        if (connectThread != null) {
+        if (connectThread != null)
+        {
             connectThread.interrupt();
             connectThread.cancel();
             connectThread = null;
         }
 
-        if (connectedThread != null) {
+        if (connectedThread != null)
+        {
             connectedThread.cancel();
             connectedThread = null;
         }
@@ -172,11 +186,12 @@ public class BluetoothBoss {
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
-    private void connectionFailed() {
+    private void connectionFailed()
+    {
         // Send a failure message back to the Activity
         Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
         Bundle bundle = new Bundle();
-        bundle.putString(BluetoothStatusHandler.TOAST, "Unable to connect device");
+        bundle.putString(BluetoothHandler.TOAST, "Unable to connect device");
         msg.setData(bundle);
         handler.sendMessage(msg);
         handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
@@ -187,37 +202,45 @@ public class BluetoothBoss {
      * with a device. It runs straight through; the connection either
      * succeeds or fails.
      */
-    private class ConnectThread extends Thread {
+    private class ConnectThread extends Thread
+    {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
         private String mSocketType;
 
-        public ConnectThread(BluetoothDevice device) {
+        public ConnectThread(BluetoothDevice device)
+        {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
-            try {
+            try
+            {
                 Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
                 tmp = (BluetoothSocket) m.invoke(device, Integer.valueOf(1));
-            } catch (NoSuchMethodException e) {
+            } catch (NoSuchMethodException e)
+            {
                 e.printStackTrace();
                 Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - NoSuchMethodException", e);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e)
+            {
                 e.printStackTrace();
                 Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalArgumentExecption", e);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e)
+            {
                 e.printStackTrace();
                 Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalAccessException", e);
-            } catch (InvocationTargetException e) {
+            } catch (InvocationTargetException e)
+            {
                 e.printStackTrace();
                 Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - InvocationTargetException", e);
             }
             mmSocket = tmp;
         }
 
-        public void run() {
+        public void run()
+        {
             Log.i(AppUtil.TAG, "BEGIN connectThread SocketType:" + mSocketType);
             setName("ConnectThread" + mSocketType);
 
@@ -225,15 +248,19 @@ public class BluetoothBoss {
             adapter.cancelDiscovery();
 
             // Make a connection to the BluetoothSocket
-            try {
+            try
+            {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
                 mmSocket.connect();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 // Close the socket
-                try {
+                try
+                {
                     mmSocket.close();
-                } catch (IOException e2) {
+                } catch (IOException e2)
+                {
                     Log.e(AppUtil.TAG, "unable to close() " + mSocketType +
                             " socket during connection failure", e2);
                 }
@@ -242,7 +269,8 @@ public class BluetoothBoss {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (BluetoothBoss.this) {
+            synchronized (BluetoothBoss.this)
+            {
                 connectThread = null;
             }
 
@@ -250,10 +278,13 @@ public class BluetoothBoss {
             connected(mmSocket, mmDevice, mSocketType);
         }
 
-        public void cancel() {
-            try {
+        public void cancel()
+        {
+            try
+            {
                 mmSocket.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 Log.e(AppUtil.TAG, "close() of connect " + mSocketType + " socket failed", e);
             }
         }

@@ -17,6 +17,8 @@ public class Mode {
     }
 
     public void init(Context context) {
+        System.out.println("current mode -> " + name);
+        Config.currentMode = this;
     }
 
     public String getName() {

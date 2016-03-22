@@ -1,26 +1,30 @@
-package com.inappropirates.lightwalker.ui;
+package com.inappropirates.lightwalker.bluetooth;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 
-import com.inappropirates.lightwalker.bluetooth.BluetoothStatus;
+import com.inappropirates.lightwalker.config.Config;
+import com.inappropirates.lightwalker.ui.AppStatusHandler;
 import com.inappropirates.lightwalker.util.AppUtil;
-import com.inappropirates.lightwalker.bluetooth.BluetoothBoss;
 
-public class BluetoothStatusHandler extends Handler
+public class BluetoothHandler extends Handler
 {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
 
     private Button button;
     private AppStatusHandler appStatusHandler;
+    private Context context;
 
-    public BluetoothStatusHandler(Button button, AppStatusHandler appStatusHandler)
+    public BluetoothHandler(Button button, AppStatusHandler appStatusHandler, Context context)
     {
         this.button = button;
         this.appStatusHandler = appStatusHandler;
+        this.context = context;
     }
 
     @Override
@@ -51,6 +55,12 @@ public class BluetoothStatusHandler extends Handler
             case MESSAGE_WRITE:
                 break;
             case MESSAGE_READ:
+                // construct a string from the valid bytes in the buffer
+                String message = (String) msg.obj;
+                System.out.println("received '" + message + "'");
+
+                if (message.equals("SettingsPlease") && Config.currentMode != null)
+                    sendCurrentSettings();
                 break;
             case MESSAGE_DEVICE_NAME:
                 appStatusHandler.sendStatus("Connected to " + msg.getData().getString(DEVICE_NAME));
@@ -59,5 +69,11 @@ public class BluetoothStatusHandler extends Handler
                 appStatusHandler.sendStatus(msg.getData().getString(TOAST));
                 break;
         }
+    }
+
+    public void sendCurrentSettings()
+    {
+        SendSettingsThread sendSettingsThread = new SendSettingsThread(Config.currentMode, context);
+        sendSettingsThread.start();
     }
 }

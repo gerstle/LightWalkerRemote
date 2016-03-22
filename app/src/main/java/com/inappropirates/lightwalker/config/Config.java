@@ -1,14 +1,14 @@
 package com.inappropirates.lightwalker.config;
 
 import com.inappropirates.lightwalker.R;
-import com.inappropirates.lightwalker.ui.SettingsActivity;
+import com.inappropirates.lightwalker.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Config
 {
-
+    public static Mode currentMode = null;
     public static List<Mode> modes = new ArrayList<Mode>()
     {
         {

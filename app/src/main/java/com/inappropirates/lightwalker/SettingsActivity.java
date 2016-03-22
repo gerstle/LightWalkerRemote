@@ -1,10 +1,11 @@
-package com.inappropirates.lightwalker.ui;
+package com.inappropirates.lightwalker;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.inappropirates.lightwalker.ui.SettingsFragment;
 import com.inappropirates.lightwalker.util.AppUtil;
 import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.config.Mode;

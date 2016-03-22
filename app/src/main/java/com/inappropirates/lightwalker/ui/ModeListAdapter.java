@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.util.AppUtil;
 import com.inappropirates.lightwalker.MainActivity;
 import com.inappropirates.lightwalker.R;
