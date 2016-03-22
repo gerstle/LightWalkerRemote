@@ -11,17 +11,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.inappropirates.lightwalker.ui.BTStatusHandler;
+import com.inappropirates.lightwalker.ui.BluetoothStatusHandler;
 import com.inappropirates.lightwalker.util.AppUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * This thread runs during a connection with a remote device.
- * It handles all incoming and outgoing transmissions.
- */
 class ConnectedThread extends Thread {
     private BluetoothSocket mmSocket;
     private InputStream mmInStream;
@@ -83,7 +79,7 @@ class ConnectedThread extends Thread {
 
             if (byteIndex > 0) {
                 Log.i(AppUtil.TAG, "Received: " + new String(buffer, 0, (byteIndex - 1)));
-                m = statusHandler.obtainMessage(BTStatusHandler.MESSAGE_READ, byteIndex - 1, -1, buffer);
+                m = statusHandler.obtainMessage(BluetoothStatus.MESSAGE_READ.ordinal(), byteIndex - 1, -1, buffer);
                 m.sendToTarget();
             }
             byteIndex = 0;
@@ -123,12 +119,12 @@ class ConnectedThread extends Thread {
                 connected = false;
 
                 // Send a failure message back to the Activity
-                Message msg = statusHandler.obtainMessage(BTStatusHandler.MESSAGE_TOAST);
+                Message msg = statusHandler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
                 Bundle bundle = new Bundle();
-                bundle.putString(BTStatusHandler.TOAST, "Device connection was lost");
+                bundle.putString(BluetoothStatusHandler.TOAST, "Device connection was lost");
                 msg.setData(bundle);
                 statusHandler.sendMessage(msg);
-                statusHandler.obtainMessage(BTStatusHandler.MESSAGE_STATE_CHANGE, BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
+                statusHandler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
             }
         }
     }

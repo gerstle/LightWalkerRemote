@@ -43,7 +43,7 @@ public class Mode {
         this.resource = resource;
     }
 
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 

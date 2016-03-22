@@ -27,7 +27,8 @@ public class ModeListAdapter extends BaseAdapter {
 
         this.modeRows = new ArrayList<>(modes.size());
         for (Mode mode : modes)
-            modeRows.add(new Row(mode));
+            if (mode.isEnabled())
+                modeRows.add(new Row(mode));
 
         inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -24,23 +24,17 @@ package com.inappropirates.lightwalker.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.inappropirates.lightwalker.ui.BTStatusHandler;
+import com.inappropirates.lightwalker.ui.BluetoothStatusHandler;
 import com.inappropirates.lightwalker.util.AppUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -76,7 +70,7 @@ public class BluetoothBoss {
         Log.d(AppUtil.TAG, "setState() " + this.state + " -> " + state);
         this.state = state;
 
-        handler.obtainMessage(BTStatusHandler.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+        handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), state, -1).sendToTarget();
     }
 
     public synchronized int getState() {
@@ -90,13 +84,13 @@ public class BluetoothBoss {
                 this.device = device;
 
         if (device == null) {
-            Message msg = handler.obtainMessage(BTStatusHandler.MESSAGE_TOAST);
+            Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
             Bundle bundle = new Bundle();
-            bundle.putString(BTStatusHandler.TOAST, "LightWalker is MIA");
+            bundle.putString(BluetoothStatusHandler.TOAST, "LightWalker is MIA");
             msg.setData(bundle);
             handler.sendMessage(msg);
 
-            msg = handler.obtainMessage(BTStatusHandler.MESSAGE_STATE_CHANGE);
+            msg = handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal());
             return;
         }
 
@@ -149,9 +143,9 @@ public class BluetoothBoss {
         connectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = handler.obtainMessage(BTStatusHandler.MESSAGE_DEVICE_NAME);
+        Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_DEVICE_NAME.ordinal());
         Bundle bundle = new Bundle();
-        bundle.putString(BTStatusHandler.DEVICE_NAME, device.getName());
+        bundle.putString(BluetoothStatusHandler.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         handler.sendMessage(msg);
 
@@ -180,12 +174,12 @@ public class BluetoothBoss {
      */
     private void connectionFailed() {
         // Send a failure message back to the Activity
-        Message msg = handler.obtainMessage(BTStatusHandler.MESSAGE_TOAST);
+        Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
         Bundle bundle = new Bundle();
-        bundle.putString(BTStatusHandler.TOAST, "Unable to connect device");
+        bundle.putString(BluetoothStatusHandler.TOAST, "Unable to connect device");
         msg.setData(bundle);
         handler.sendMessage(msg);
-        handler.obtainMessage(BTStatusHandler.MESSAGE_STATE_CHANGE, BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
+        handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
     }
 
     /**
