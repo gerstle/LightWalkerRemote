@@ -30,28 +30,18 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
-            <TextView
-                android:layout_width="219dp"
-                android:layout_height="match_parent"
-                android:text="don't worry about it"
-                android:id="@+id/statusTextView"
-                android:layout_weight="0.13"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="connect"
-                android:id="@+id/bluetooth_button"
-                android:layout_gravity="right"
-                android:background="#ce6a6c"
-                android:minWidth="150dp"
-                android:textColor="@android:color/black"/>
-        </LinearLayout>
+            android:text="connect"
+            android:id="@+id/bluetooth_button"
+            android:layout_gravity="right"
+            android:background="#ce6a6c"
+            android:minWidth="150dp"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="0dp"/>
     </LinearLayout>
 </RelativeLayout>

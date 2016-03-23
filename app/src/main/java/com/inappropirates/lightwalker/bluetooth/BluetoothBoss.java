@@ -31,7 +31,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.inappropirates.lightwalker.util.AppUtil;
+import com.inappropirates.lightwalker.util.Util;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -47,37 +47,42 @@ public class BluetoothBoss
     private final BluetoothAdapter adapter;
     private BluetoothDevice device;
     private Context context;
-    private final Handler handler;
+    private Handler handler;
     private ConnectThread connectThread;
     private ConnectedThread connectedThread;
-    private int state;
-
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;
-    public static final int STATE_LISTEN = 1;
-    public static final int STATE_CONNECTING = 2;
-    public static final int STATE_CONNECTED = 3;
-    public static final int STATE_DISCONNECTED = 4;
+    private BluetoothStatusEnum state;
 
     public BluetoothBoss(Context context, Handler handler)
     {
         adapter = BluetoothAdapter.getDefaultAdapter();
-        state = STATE_NONE;
+        state = BluetoothStatusEnum.NONE;
         this.context = context;
         this.handler = handler;
     }
 
-    private synchronized void setState(int state)
+    private synchronized void setState(BluetoothStatusEnum state)
     {
-        Log.d(AppUtil.TAG, "setState() " + this.state + " -> " + state);
+        Log.d(Util.TAG, "setState() " + this.state + " -> " + state);
         this.state = state;
 
-        handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), state, -1).sendToTarget();
+        handler.obtainMessage(BluetoothMessageEnum.STATE_CHANGE.ordinal(), state.ordinal(), -1).sendToTarget();
     }
 
-    public synchronized int getState()
+    public synchronized BluetoothStatusEnum getState()
     {
         return state;
+    }
+
+    public synchronized void sendStateMessage()
+    {
+        setState(state);
+    }
+
+    public void setHandler(Handler handler)
+    {
+        this.handler = handler;
+        if (connectedThread != null)
+            connectedThread.setHandler(handler);
     }
 
     public synchronized void connect()
@@ -89,20 +94,20 @@ public class BluetoothBoss
 
         if (device == null)
         {
-            Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
+            Message msg = handler.obtainMessage(BluetoothMessageEnum.TOAST.ordinal());
             Bundle bundle = new Bundle();
             bundle.putString(BluetoothHandler.TOAST, "LightWalker is MIA");
             msg.setData(bundle);
             handler.sendMessage(msg);
 
-            msg = handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal());
+            msg = handler.obtainMessage(BluetoothMessageEnum.STATE_CHANGE.ordinal());
             return;
         }
 
-        Log.d(AppUtil.TAG, "connecting to: " + device);
+        Log.d(Util.TAG, "connecting to: " + device);
 
         // Cancel any thread attempting to make a connection
-        if (state == STATE_CONNECTING)
+        if (state ==BluetoothStatusEnum.CONNECTING)
         {
             if (connectThread != null)
             {
@@ -121,7 +126,7 @@ public class BluetoothBoss
         // Start the thread to connect with the given device
         connectThread = new ConnectThread(device);
         connectThread.start();
-        setState(STATE_CONNECTING);
+        setState(BluetoothStatusEnum.CONNECTING);
     }
 
     /**
@@ -133,7 +138,7 @@ public class BluetoothBoss
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice
             device, final String socketType)
     {
-        Log.d(AppUtil.TAG, "connected, Socket Type:" + socketType);
+        Log.d(Util.TAG, "connected, Socket Type:" + socketType);
 
         // Cancel the thread that completed the connection
         if (connectThread != null)
@@ -154,18 +159,18 @@ public class BluetoothBoss
         connectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_DEVICE_NAME.ordinal());
+        Message msg = handler.obtainMessage(BluetoothMessageEnum.DEVICE_NAME.ordinal());
         Bundle bundle = new Bundle();
         bundle.putString(BluetoothHandler.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         handler.sendMessage(msg);
 
-        setState(STATE_CONNECTED);
+        setState(BluetoothStatusEnum.CONNECTED);
     }
 
     public synchronized void stop()
     {
-        Log.d(AppUtil.TAG, "stop");
+        Log.d(Util.TAG, "stop");
 
         if (connectThread != null)
         {
@@ -180,7 +185,7 @@ public class BluetoothBoss
             connectedThread = null;
         }
 
-        setState(STATE_NONE);
+        setState(BluetoothStatusEnum.NONE);
     }
 
     /**
@@ -189,12 +194,19 @@ public class BluetoothBoss
     private void connectionFailed()
     {
         // Send a failure message back to the Activity
-        Message msg = handler.obtainMessage(BluetoothStatus.MESSAGE_TOAST.ordinal());
+        Message msg = handler.obtainMessage(BluetoothMessageEnum.TOAST.ordinal());
         Bundle bundle = new Bundle();
         bundle.putString(BluetoothHandler.TOAST, "Unable to connect device");
         msg.setData(bundle);
         handler.sendMessage(msg);
-        handler.obtainMessage(BluetoothStatus.MESSAGE_STATE_CHANGE.ordinal(), BluetoothBoss.STATE_DISCONNECTED, -1).sendToTarget();
+        handler.obtainMessage(BluetoothMessageEnum.STATE_CHANGE.ordinal(), BluetoothStatusEnum.DISCONNECTED.ordinal(), -1).sendToTarget();
+    }
+
+    public boolean send(String message)
+    {
+        if (state ==BluetoothStatusEnum.CONNECTED && connectedThread != null)
+            return connectedThread.send(message);
+        return false;
     }
 
     /**
@@ -222,26 +234,26 @@ public class BluetoothBoss
             } catch (NoSuchMethodException e)
             {
                 e.printStackTrace();
-                Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - NoSuchMethodException", e);
+                Log.e(Util.TAG, "Socket Type: " + mSocketType + "create() failed - NoSuchMethodException", e);
             } catch (IllegalArgumentException e)
             {
                 e.printStackTrace();
-                Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalArgumentExecption", e);
+                Log.e(Util.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalArgumentExecption", e);
             } catch (IllegalAccessException e)
             {
                 e.printStackTrace();
-                Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalAccessException", e);
+                Log.e(Util.TAG, "Socket Type: " + mSocketType + "create() failed - IllegalAccessException", e);
             } catch (InvocationTargetException e)
             {
                 e.printStackTrace();
-                Log.e(AppUtil.TAG, "Socket Type: " + mSocketType + "create() failed - InvocationTargetException", e);
+                Log.e(Util.TAG, "Socket Type: " + mSocketType + "create() failed - InvocationTargetException", e);
             }
             mmSocket = tmp;
         }
 
         public void run()
         {
-            Log.i(AppUtil.TAG, "BEGIN connectThread SocketType:" + mSocketType);
+            Log.i(Util.TAG, "BEGIN connectThread SocketType:" + mSocketType);
             setName("ConnectThread" + mSocketType);
 
             // Always cancel discovery because it will slow down a connection
@@ -261,7 +273,7 @@ public class BluetoothBoss
                     mmSocket.close();
                 } catch (IOException e2)
                 {
-                    Log.e(AppUtil.TAG, "unable to close() " + mSocketType +
+                    Log.e(Util.TAG, "unable to close() " + mSocketType +
                             " socket during connection failure", e2);
                 }
                 connectionFailed();
@@ -285,7 +297,7 @@ public class BluetoothBoss
                 mmSocket.close();
             } catch (IOException e)
             {
-                Log.e(AppUtil.TAG, "close() of connect " + mSocketType + " socket failed", e);
+                Log.e(Util.TAG, "close() of connect " + mSocketType + " socket failed", e);
             }
         }
     }

@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 
 import com.inappropirates.lightwalker.config.Config;
-import com.inappropirates.lightwalker.util.AppUtil;
+import com.inappropirates.lightwalker.util.Util;
 import com.inappropirates.lightwalker.MainActivity;
 import com.inappropirates.lightwalker.R;
 import com.inappropirates.lightwalker.config.Mode;
@@ -59,9 +59,11 @@ public class ModeListAdapter extends BaseAdapter {
         row.setRadioButton((RadioButton) row.getView().findViewById(R.id.modeRadioButton));
         row.getRadioButton().setText(row.getName());
         row.getRadioButton().setOnClickListener(
-                new View.OnClickListener() {
+                new View.OnClickListener()
+                {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v)
+                    {
                         RadioButton buttonView = (RadioButton) v;
                         for (Row row : modeRows)
                             if (buttonView.equals(row.getRadioButton()))
@@ -71,6 +73,8 @@ public class ModeListAdapter extends BaseAdapter {
                         buttonView.setChecked(true);
                     }
                 });
+        if (row.getMode().equals(Config.currentMode))
+            row.getRadioButton().setChecked(true);
 
         row.setConfigButton((Button) row.getView().findViewById(R.id.configButton));
         if ((row.getMode().getIntent() != null) && (row.getMode().getResource() != null))
@@ -81,7 +85,7 @@ public class ModeListAdapter extends BaseAdapter {
                 public void onClick(View v)
                 {
                     Intent intent = new Intent(context, row.getMode().getIntent());
-                    intent.putExtra(AppUtil.INTENT_EXTRA_MODE_NAME, row.getName());
+                    intent.putExtra(Util.INTENT_EXTRA_MODE_NAME, row.getName());
                     context.startActivity(intent);
                 }
             });

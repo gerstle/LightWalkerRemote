@@ -19,6 +19,10 @@ public class ColorGridAdapter extends BaseAdapter
 
     private List<Color> colors = new ArrayList<Color>(){
         {
+            add(new Color("purple", 192, 255, 255));
+            add(new Color(208, 255, 255));
+            add(new Color("pink", 224, 255, 255));
+            add(new Color(240, 255, 255));
             add(new Color("red", 0, 255, 255, android.graphics.Color.RED));
             add(new Color(16, 255, 255));
             add(new Color("orange", 32, 255, 255));
@@ -31,10 +35,6 @@ public class ColorGridAdapter extends BaseAdapter
             add(new Color(144, 255, 255));
             add(new Color("blue", 160, 255, 255, android.graphics.Color.BLUE));
             add(new Color(176, 255, 255));
-            add(new Color("purple", 192, 255, 255));
-            add(new Color(208, 255, 255));
-            add(new Color("pink", 224, 255, 255));
-            add(new Color(240, 255, 255));
             add(new Color("white", 0, 0, 255, android.graphics.Color.WHITE));
             add(new Color("black", 0, 0, 0, android.graphics.Color.BLACK));
         }
