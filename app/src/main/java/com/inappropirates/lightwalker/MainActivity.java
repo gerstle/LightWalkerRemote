@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.inappropirates.lightwalker.bluetooth.BluetoothStatusEnum;
 import com.inappropirates.lightwalker.bluetooth.SendSettingsThread;
 import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.config.Preferences;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static BluetoothBoss btBoss;
     private static Context context;
     private ListView modeListView;
-    private Handler bluetoothHandler;
+    private BluetoothHandler bluetoothHandler;
     private BroadcastReceiver bluetoothDisconnectReceiver;
 
     @Override
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         if (btBoss != null)
         {
             btBoss.setHandler(bluetoothHandler);
-            btBoss.sendStateMessage();
+            bluetoothHandler.setConnectedButton(btBoss.getState() == BluetoothStatusEnum.CONNECTED);
         }
     }
 

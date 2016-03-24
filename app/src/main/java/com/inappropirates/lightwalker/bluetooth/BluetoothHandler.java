@@ -35,15 +35,12 @@ public class BluetoothHandler extends Handler
                 switch (BluetoothStatusEnum.values()[msg.arg1])
                 {
                     case DISCONNECTED:
-                        button.setBackgroundColor(android.graphics.Color.argb(255, 206, 106, 108)); // red
-                        button.setEnabled(true);
-                        button.setText("connect");
+                        setConnectedButton(false);
                         break;
                     case CONNECTING:
                         break;
                     case CONNECTED:
-                        button.setBackgroundColor(android.graphics.Color.argb(255, 144, 210, 142)); // green
-                        button.setText("connected");
+                        setConnectedButton(true);
                         MainActivity.sendAllCurrentSettings();
                         break;
                     case LISTEN:
@@ -68,6 +65,22 @@ public class BluetoothHandler extends Handler
             case TOAST:
                 Toast.makeText(context, msg.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    // be careful calling this from non-ui threads...
+    public void setConnectedButton(boolean connected)
+    {
+        if (connected)
+        {
+            button.setBackgroundColor(android.graphics.Color.argb(255, 144, 210, 142)); // green
+            button.setText("connected");
+        }
+        else
+        {
+            button.setBackgroundColor(android.graphics.Color.argb(255, 206, 106, 108)); // red
+            button.setEnabled(true);
+            button.setText("connect");
         }
     }
 }

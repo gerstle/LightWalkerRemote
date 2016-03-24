@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.inappropirates.lightwalker.MainActivity;
-import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.config.Mode;
 import com.inappropirates.lightwalker.config.Modes;
 import com.inappropirates.lightwalker.util.Util;
@@ -47,6 +46,7 @@ public class SendSettingsThread extends Thread
                 MainActivity.sendSetting(entry.getKey(), PropertyFormatter.getStringVal(entry.getKey(), entry.getValue()));
                 try
                 {
+                    // TODO change this to wait for the OK response before sending the next, not sleeping
                     Thread.sleep(250);
                 } catch (InterruptedException e)
                 {
