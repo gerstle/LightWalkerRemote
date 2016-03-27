@@ -41,8 +41,8 @@ import java.util.UUID;
 
 public class BluetoothBoss
 {
-    private static final String NAME = "LW";
-    private static final UUID MY_UUID_SECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final String LIGHTWALKER_TWO_POINT_OH = "00:18:96:B0:01:8F";
+    private static final String LIGHTWALKER_THREE_POINT_OH = "98:76:B6:00:8A:E0";
 
     private final BluetoothAdapter adapter;
     private BluetoothDevice device;
@@ -89,8 +89,11 @@ public class BluetoothBoss
     {
         Set<BluetoothDevice> devices = adapter.getBondedDevices();
         for (BluetoothDevice device : devices)
-            if (device.getAddress().equals("00:18:96:B0:01:8F"))
+        {
+            Log.d(Util.TAG, "connect: looking at device " + device.getName() + " - " + device.getAddress());
+            if (device.getAddress().equals(LIGHTWALKER_THREE_POINT_OH))
                 this.device = device;
+        }
 
         if (device == null)
         {
