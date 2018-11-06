@@ -6,10 +6,12 @@ import com.inappropirates.lightwalker.SettingsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Config
+public enum ModeManager
 {
-    public static Mode currentMode = null;
-    public static List<Mode> modes = new ArrayList<Mode>()
+    INSTANCE;
+
+    private Mode currentMode = null;
+    private List<Mode> modes = new ArrayList<Mode>()
     {
         {
             add(new Mode("main", SettingsActivity.class, R.layout.main_preferences, false));
@@ -26,12 +28,24 @@ public class Config
         }
     };
 
-    public static Mode getMode(String modeName)
+    public Mode getMode(String modeName)
     {
         for (Mode mode : modes)
             if (mode.getName().equals(modeName))
                 return mode;
 
         return null;
+    }
+
+    public Mode getCurrentMode() {
+        return currentMode;
+    }
+
+    public void setCurrentMode(Mode currentMode) {
+        this.currentMode = currentMode;
+    }
+
+    public List<Mode> getModes() {
+        return modes;
     }
 }

@@ -1,8 +1,6 @@
-package com.inappropirates.util;
+package com.inappropirates.lightwalker.util;
 
 import android.graphics.Color;
-
-import com.inappropirates.lightwalker.util.Util;
 
 public class PropertyFormatter
 {

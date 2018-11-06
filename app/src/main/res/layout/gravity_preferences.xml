@@ -10,7 +10,7 @@
         android:key="gravityRotate"
         android:title="rotate?" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="50"
         android:key="gravityMinValue"
         android:max="255"

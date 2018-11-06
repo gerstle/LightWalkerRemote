@@ -2,11 +2,9 @@
 <PreferenceScreen
        xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:robobunny="http://robobunny.com"
-       android:key="chaos_preferences">
+       android:key="chaos_preferences" android:layout_height="match_parent" android:layout_width="match_parent">
        
-    chaosStepLength,
-    chaosDelay,
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:key="chaosMinValue"
         android:title="min value"
         android:defaultValue="100"
@@ -15,7 +13,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:key="chaosStepLength"
         android:title="step length"
         android:defaultValue="1250"
@@ -24,7 +22,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />    
     
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:key="chaosSpeed"
         android:title="speed"
         android:defaultValue="4"
@@ -33,7 +31,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:key="chaosSwing"
         android:title="color variance"
         android:defaultValue="30"
@@ -48,7 +46,7 @@
         android:key="chaosSparse"
         android:title="sparse mode" />       
     
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="chaosColor"
         android:title="color"
         />

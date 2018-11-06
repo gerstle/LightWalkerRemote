@@ -10,16 +10,16 @@
         android:entries="@array/rainbowModes"
         android:entryValues="@array/rainbowModeValues"
         android:key="rainbowMode"
-        android:title="mode"></ListPreference>
+        android:title="mode" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="40"
         android:key="rainbowMinValue"
         android:max="255"
         android:title="Min Brightness"
         robobunny:min="0" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="35"
         android:key="rainbowDelay"
         android:max="500"

@@ -3,7 +3,7 @@ package com.inappropirates.lightwalker.config;
 import android.content.Context;
 import android.util.Log;
 
-import com.inappropirates.lightwalker.MainActivity;
+import com.inappropirates.lightwalker.bluetooth.BluetoothUartManager;
 import com.inappropirates.lightwalker.util.Util;
 
 public class Mode {
@@ -22,8 +22,8 @@ public class Mode {
 
     public void init(Context context) {
         Log.d(Util.TAG, "current mode -> " + name);
-        Config.currentMode = this;
-        MainActivity.sendAllCurrentSettings();
+        ModeManager.INSTANCE.setCurrentMode(this);
+        BluetoothUartManager.INSTANCE.sendAllCurrentSettings();
     }
 
     public String getName() {

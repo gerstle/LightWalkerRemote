@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robobunny="http://robobunny.com"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:key="equalizer_preferences">
 
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="zebraColorOne"
         android:title="color one" />
 
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="zebraColorTwo"
         android:title="colorTwo" />
 </PreferenceScreen>

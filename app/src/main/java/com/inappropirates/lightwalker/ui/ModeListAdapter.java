@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 
-import com.inappropirates.lightwalker.config.Config;
+import com.inappropirates.lightwalker.config.ModeManager;
 import com.inappropirates.lightwalker.util.Util;
 import com.inappropirates.lightwalker.MainActivity;
 import com.inappropirates.lightwalker.R;
@@ -51,107 +51,83 @@ public class ModeListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Row row = modeRows.get(position);
         row.setView(inflater.inflate(R.layout.mode_list_layout, null));
 
-        row.setRadioButton((RadioButton) row.getView().findViewById(R.id.modeRadioButton));
+        row.setRadioButton(row.getView().findViewById(R.id.modeRadioButton));
         row.getRadioButton().setText(row.getName());
         row.getRadioButton().setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        RadioButton buttonView = (RadioButton) v;
-                        for (Row row : modeRows)
-                            if (buttonView.equals(row.getRadioButton()))
-                                row.getMode().init(context);
-                            else if (row.getRadioButton() != null)
-                                row.getRadioButton().setChecked(false);
-                        buttonView.setChecked(true);
-                    }
+                v -> {
+                    RadioButton buttonView = (RadioButton) v;
+                    for (Row row1 : modeRows)
+                        if (buttonView.equals(row1.getRadioButton()))
+                            row1.getMode().init(context);
+                        else if (row1.getRadioButton() != null)
+                            row1.getRadioButton().setChecked(false);
+                    buttonView.setChecked(true);
                 });
-        if (row.getMode().equals(Config.currentMode))
+
+        if (row.getMode().equals(ModeManager.INSTANCE.getCurrentMode()))
             row.getRadioButton().setChecked(true);
 
-        row.setConfigButton((Button) row.getView().findViewById(R.id.configButton));
-        if ((row.getMode().getIntent() != null) && (row.getMode().getResource() != null))
-        {
-            row.getConfigButton().setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Intent intent = new Intent(context, row.getMode().getIntent());
-                    intent.putExtra(Util.INTENT_EXTRA_MODE_NAME, row.getName());
-                    context.startActivity(intent);
-                }
+        row.setConfigButton(row.getView().findViewById(R.id.configButton));
+        if ((row.getMode().getIntent() != null) && (row.getMode().getResource() != null)) {
+            row.getConfigButton().setOnClickListener(v -> {
+                Intent intent = new Intent(context, row.getMode().getIntent());
+                intent.putExtra(Util.INTENT_EXTRA_MODE_NAME, row.getName());
+                context.startActivity(intent);
             });
-        } else
-        {
+        } else {
             row.getConfigButton().setVisibility(View.INVISIBLE);
         }
 
         return row.getView();
     }
 
-    private class Row
-    {
-        private String name;
+    private class Row {
         private View view;
         private RadioButton radioButton;
         private Button configButton;
         private Mode mode;
 
-        public Row(Mode mode)
-        {
+        public Row(Mode mode) {
             this.mode = mode;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return mode.getName();
         }
 
-        public View getView()
-        {
+        public View getView() {
             return view;
         }
 
-        public void setView(View view)
-        {
+        public void setView(View view) {
             this.view = view;
         }
 
-        public RadioButton getRadioButton()
-        {
+        public RadioButton getRadioButton() {
             return radioButton;
         }
 
-        public void setRadioButton(RadioButton radioButton)
-        {
+        public void setRadioButton(RadioButton radioButton) {
             this.radioButton = radioButton;
         }
 
-        public Button getConfigButton()
-        {
+        public Button getConfigButton() {
             return configButton;
         }
 
-        public void setConfigButton(Button configButton)
-        {
+        public void setConfigButton(Button configButton) {
             this.configButton = configButton;
         }
 
-        public Mode getMode()
-        {
+        public Mode getMode() {
             return mode;
         }
 
-        public void setMode(Mode mode)
-        {
+        public void setMode(Mode mode) {
             this.mode = mode;
         }
     }

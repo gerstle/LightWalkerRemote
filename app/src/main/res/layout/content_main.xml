@@ -19,7 +19,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="500dp"
             android:id="@+id/modeListView"
             android:layout_weight="0.81" />
 
@@ -31,17 +31,18 @@
             android:layout_marginBottom="3dp" />
 
         <Button
+            android:id="@+id/bluetooth_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="connect"
-            android:id="@+id/bluetooth_button"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="0dp"
             android:background="#ce6a6c"
             android:minWidth="150dp"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="0dp"/>
+            android:onClick="connectButtonClicked"
+            android:text="connect"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 </RelativeLayout>

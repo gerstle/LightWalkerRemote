@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:key="pulse_preferences">
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="200"
         android:key="pulseMinRate"
         android:max="2000"
@@ -14,7 +14,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="4500"
         android:key="pulseMaxRate"
         android:max="10000"
@@ -28,7 +28,7 @@
         android:key="pulseSyncLegs"
         android:title="synchronize legs" />
 
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="pulseColor"
         android:title="color" />
 

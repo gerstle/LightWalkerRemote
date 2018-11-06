@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:key="sparkle_preferences">
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="5"
         android:key="sparkleFadeRate"
         android:max="60"
@@ -14,7 +14,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="525"
         android:key="sparkleFlashLength"
         android:max="1000"
@@ -23,7 +23,7 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="575"
         android:key="sparkleSparkleLength"
         android:max="2000"
@@ -32,15 +32,15 @@
         robobunny:unitsLeft=""
         robobunny:unitsRight="" />
 
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="sparkleFootFlashColor"
         android:title="foot flash color" />
 
-    <com.inappropirates.util.ColorPickerPreference
+    <com.inappropirates.lightwalker.ui.ColorPickerPreference
         android:key="sparkleSparkleColor"
         android:title="sparkle color" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="50"
         android:key="sparkleMinValue"
         android:max="255"

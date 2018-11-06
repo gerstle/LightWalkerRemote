@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:key="flames_preferences">
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="800"
         android:key="flamesStepMillis"
         android:max="2000"
         android:title="step length (millis)"
         robobunny:min="100" />
 
-    <com.robobunny.SeekBarPreference
+    <com.inappropirates.lightwalker.ui.SeekBarPreference
         android:defaultValue="30"
         android:key="flamesDelay"
         android:max="500"

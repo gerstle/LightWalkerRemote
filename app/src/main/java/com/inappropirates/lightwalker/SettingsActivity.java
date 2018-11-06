@@ -5,9 +5,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import com.inappropirates.lightwalker.config.ModeManager;
 import com.inappropirates.lightwalker.ui.SettingsFragment;
 import com.inappropirates.lightwalker.util.Util;
-import com.inappropirates.lightwalker.config.Config;
 import com.inappropirates.lightwalker.config.Mode;
 
 public class SettingsActivity extends Activity {
@@ -17,7 +17,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mode = Config.getMode(getIntent().getExtras().getString(Util.INTENT_EXTRA_MODE_NAME));
+        mode = ModeManager.INSTANCE.getMode(getIntent().getExtras().getString(Util.INTENT_EXTRA_MODE_NAME));
 
         if (mode == null)
             throw new RuntimeException(String.format("Could not find mode '%s'", getIntent().getExtras().getString(Util.INTENT_EXTRA_MODE_NAME)));
