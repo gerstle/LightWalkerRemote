@@ -1,10 +1,10 @@
-/* The following code was written by Matthew Wiggins 
- * and is released under the APACHE 2.0 license 
- * 
+/* The following code was written by Matthew Wiggins
+ * and is released under the APACHE 2.0 license
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Improvements :
- * - save the value on positive button click, not on seekbar change
+ * - save the value on positive button click, not on seek bar change
  * - handle @string/... values in xml file
  */
 
@@ -24,14 +24,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
-public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener, OnClickListener
-{
+public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener, OnClickListener {
     // ------------------------------------------------------------------------------------------
     // Private attributes :
-    private static final String androidns="http://schemas.android.com/apk/res/android";
+    private static final String androidns = "http://schemas.android.com/apk/res/android";
 
     private SeekBar mSeekBar;
-    private TextView mSplashText,mValueText;
+    private TextView mValueText;
     private Context mContext;
 
     private String mDialogMessage, mSuffix;
@@ -39,43 +38,42 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     // ------------------------------------------------------------------------------------------
 
 
-
     // ------------------------------------------------------------------------------------------
     // Constructor :
     public SeekBarPreference(Context context, AttributeSet attrs) {
 
-        super(context,attrs); 
+        super(context, attrs);
         mContext = context;
 
         // Get string value for dialogMessage :
         int mDialogMessageId = attrs.getAttributeResourceValue(androidns, "dialogMessage", 0);
-        if(mDialogMessageId == 0) mDialogMessage = attrs.getAttributeValue(androidns, "dialogMessage");
+        if (mDialogMessageId == 0)
+            mDialogMessage = attrs.getAttributeValue(androidns, "dialogMessage");
         else mDialogMessage = mContext.getString(mDialogMessageId);
 
         // Get string value for suffix (text attribute in xml file) :
         int mSuffixId = attrs.getAttributeResourceValue(androidns, "text", 0);
-        if(mSuffixId == 0) mSuffix = attrs.getAttributeValue(androidns, "text");
+        if (mSuffixId == 0) mSuffix = attrs.getAttributeValue(androidns, "text");
         else mSuffix = mContext.getString(mSuffixId);
 
-        // Get default and max seekbar values :
+        // Get default and max seek bar values :
         mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
         mMax = attrs.getAttributeIntValue(androidns, "max", 100);
     }
     // ------------------------------------------------------------------------------------------
 
 
-
     // ------------------------------------------------------------------------------------------
     // DialogPreference methods :
-    @Override 
+    @Override
     protected View onCreateDialogView() {
 
         LinearLayout.LayoutParams params;
         LinearLayout layout = new LinearLayout(mContext);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(6,6,6,6);
+        layout.setPadding(6, 6, 6, 6);
 
-        mSplashText = new TextView(mContext);
+        TextView mSplashText = new TextView(mContext);
         if (mDialogMessage != null)
             mSplashText.setText(mDialogMessage);
         layout.addView(mSplashText);
@@ -84,7 +82,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
         mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
         mValueText.setTextSize(32);
         params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layout.addView(mValueText, params);
 
@@ -101,7 +99,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
         return layout;
     }
 
-    @Override 
+    @Override
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
         mSeekBar.setMax(mMax);
@@ -109,43 +107,50 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     }
 
     @Override
-    protected void onSetInitialValue(boolean restore, Object defaultValue)  
-    {
+    protected void onSetInitialValue(boolean restore, Object defaultValue) {
         super.onSetInitialValue(restore, defaultValue);
         if (restore)
-        	mValue = shouldPersist() ? getPersistedInt(mDefault) : 0;
-        else 
-            mValue = (Integer)defaultValue;
+            mValue = shouldPersist() ? getPersistedInt(mDefault) : 0;
+        else
+            mValue = (Integer) defaultValue;
     }
     // ------------------------------------------------------------------------------------------
-
 
 
     // ------------------------------------------------------------------------------------------
     // OnSeekBarChangeListener methods :
     @Override
-    public void onProgressChanged(SeekBar seek, int value, boolean fromTouch)
-    {
+    public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
         String t = String.valueOf(value);
         mValueText.setText(mSuffix == null ? t : t.concat(" " + mSuffix));
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seek) {}
+    public void onStartTrackingTouch(SeekBar seek) {
+    }
+
     @Override
-    public void onStopTrackingTouch(SeekBar seek) {}
+    public void onStopTrackingTouch(SeekBar seek) {
+    }
 
-    public void setMax(int max) { mMax = max; }
-    public int getMax() { return mMax; }
+    public void setMax(int max) {
+        mMax = max;
+    }
 
-    public void setProgress(int progress) { 
+    public int getMax() {
+        return mMax;
+    }
+
+    public void setProgress(int progress) {
         mValue = progress;
         if (mSeekBar != null)
-            mSeekBar.setProgress(progress); 
+            mSeekBar.setProgress(progress);
     }
-    public int getProgress() { return mValue; }
-    // ------------------------------------------------------------------------------------------
 
+    public int getProgress() {
+        return mValue;
+    }
+    // ------------------------------------------------------------------------------------------
 
 
     // ------------------------------------------------------------------------------------------
