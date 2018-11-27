@@ -24,7 +24,6 @@ public enum ModeManager
             add(new Mode("equalizer", SettingsActivity.class, R.layout.equalizer_preferences, true));
             add(new Mode("bubble", SettingsActivity.class, R.layout.bubble_preferences, true));
             add(new Mode("gravity", SettingsActivity.class, R.layout.gravity_preferences, true));
-            add(new Mode("pulse", SettingsActivity.class, R.layout.pulse_preferences, true));
         }
     };
 

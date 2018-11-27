@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="pulseColorStyles">
-        <item>static</item>
-        <item>cycle</item>
-        <item>random</item>
-    </string-array>
-
-    <string-array name="pulseColorStylesValues">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
     <string-array name="rainbowModes">
         <item>single</item>
         <item>double</item>

@@ -187,11 +187,12 @@ public enum BluetoothUartManager {
                 Log.d(TAG, "setting mode " + mode.getName());
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-                sendSetting("mode", Integer.valueOf(Modes.valueOf(mode.getName()).ordinal()).toString());
                 for (Map.Entry<String, ?> entry : preferences.getAll().entrySet())
                     if (entry.getKey().startsWith("main") || entry.getKey().startsWith(mode.getName())) {
                         sendSetting(entry.getKey(), PropertyFormatter.getStringVal(entry.getKey(), entry.getValue()));
                     }
+
+                sendSetting("mode", Integer.valueOf(Modes.valueOf(mode.getName()).ordinal()).toString());
             }).start();
         }
     }
