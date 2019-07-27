@@ -3,6 +3,7 @@ package com.inappropirates.lightwalker.bluetooth;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.util.Log;
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 import static com.inappropirates.lightwalker.util.Util.TAG;
 
 public class GattCallbackHandler extends BluetoothGattCallback {
+    private static final UUID CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
     private static final UUID UART_SERVICE_UUID = UUID.fromString("6e400001-b5a3-f393-e0a9-e50e24dcca9e");
     private static final UUID TX_CHARACTERISTIC_UUID = UUID.fromString("6e400002-b5a3-f393-e0a9-e50e24dcca9e");
     private static final UUID RX_CHARACTERISTIC_UUID = UUID.fromString("6e400003-b5a3-f393-e0a9-e50e24dcca9e");
@@ -66,6 +68,9 @@ public class GattCallbackHandler extends BluetoothGattCallback {
             }
 
             gatt.setCharacteristicNotification(rxChar, true);
+            BluetoothGattDescriptor descriptor = rxChar.getDescriptor(CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID);
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            gatt.writeDescriptor(descriptor);
         } else {
             Log.w(TAG, "onServicesDiscovered received: " + status);
         }

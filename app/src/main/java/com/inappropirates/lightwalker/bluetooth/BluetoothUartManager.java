@@ -100,8 +100,10 @@ public enum BluetoothUartManager {
             Log.e(TAG, "failed to connect to GATT", e);
             bluetoothState = BluetoothProfile.STATE_DISCONNECTED;
 
-            if (bluetoothGatt != null)
+            if (bluetoothGatt != null) {
                 bluetoothGatt.disconnect();
+                bluetoothGatt = null;
+            }
         }
     }
 
@@ -133,7 +135,7 @@ public enum BluetoothUartManager {
         Preferences preference = Preferences.valueOf(key);
         String logMessage = String.format("sending %s(%d)=%s... ", key, preference.ordinal(), value);
         if (send(String.format("%d=%s\r", preference.ordinal(), value)))
-            Log.d(TAG, logMessage + "success!");
+            Log.d(TAG, logMessage + "sent!");
         else
             Log.d(TAG, logMessage + "failed.");
     }
