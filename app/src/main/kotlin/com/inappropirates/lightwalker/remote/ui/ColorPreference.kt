@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -37,29 +39,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.config.Preferences
+import com.inappropirates.lightwalker.remote.config.title
+import com.inappropirates.lightwalker.remote.util.PropertyFormatter
 import me.zhanghai.compose.preference.BasicPreference
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.rememberPreferenceState
 import java.util.UUID
 
 inline fun LazyListScope.colorPreference(
-    key: String,
+    pref: Preferences,
     defaultValue: String,
-    crossinline title: @Composable (String) -> Unit,
     modifier: Modifier = Modifier.fillMaxWidth(),
     crossinline rememberState: @Composable () -> MutableState<String> = {
-        rememberPreferenceState(key, defaultValue)
+        rememberPreferenceState(pref.toString(), defaultValue)
     },
     crossinline enabled: (String) -> Boolean = { true },
 ) {
-    item(key = key, contentType = "ColorPreference") {
+    item(key = pref.toString(), contentType = "ColorPreference") {
         val state = rememberState()
         val value by state
 
         ColorPreference(
-            key = key,
+            key = pref.toString(),
             state = state,
-            title = { title(value) },
+            title = { Text(pref.title()) },
             modifier = modifier,
             enabled = enabled(value),
         )
@@ -106,6 +111,8 @@ fun ColorPreference(
                 ?.getString("color")
                 ?.let {
                     onValueChange(it)
+                    val color = HSVColor.fromAndroidColor(Color.fromHex(it))
+                    BluetoothUartManager.sendSetting(key, PropertyFormatter.getStringVal(key, color))
                 }
         }
     )
@@ -154,7 +161,8 @@ fun ColorPreference(
                                     modifier = Modifier
                                         .width(150.dp)
                                         .height(50.dp)
-                                        .padding(5.dp),
+                                        .padding(5.dp)
+                                        .border(1.dp, Color.Black),
                                     color = Color.fromHex(value)
                                 ) {}
                             }

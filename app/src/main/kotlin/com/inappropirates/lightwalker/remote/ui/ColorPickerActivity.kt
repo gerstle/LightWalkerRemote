@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.inappropirates.lightwalker.remote.config.Preferences
+import com.inappropirates.lightwalker.remote.config.title
 import com.inappropirates.lightwalker.remote.ui.theme.RemoteTheme
 
 
@@ -34,6 +36,7 @@ class ColorPickerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val key = intent.extras?.getString("key")!!
+        val pref = Preferences.valueOf(key)
         val color = mutableStateOf(Color.fromHex(intent.extras?.getString("color")!!))
         val activity = this
 
@@ -46,7 +49,7 @@ class ColorPickerActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    text = key,
+                                    text = pref.title(),
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center,
                                     color = Color.Blue

@@ -76,4 +76,6 @@ dependencies {
 
     implementation("me.zhanghai.compose.preference:library:1.0.0")
     implementation(libs.compose.colorpicker)
+
+    implementation("org.apache.commons:commons-lang3:3.15.0")
 }

@@ -1,5 +1,7 @@
 package com.inappropirates.lightwalker.remote.config
 
+import org.apache.commons.lang3.StringUtils
+
 enum class Preferences {
     // ------------------------------------------------------------------------
     // Main
@@ -75,3 +77,10 @@ enum class Preferences {
     flamesStepMillis,
     flamesDelay
 }
+
+fun Preferences.title(): String =
+    this
+        .toString()
+        .let { StringUtils.splitByCharacterTypeCamelCase(it) }
+        .filterIndexed { index, _ -> index > 0 }
+        .joinToString(" ")

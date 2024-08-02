@@ -14,6 +14,17 @@ class HSVColor(
     var name: String? = null,
     private var androidColor: Color? = null
 ) {
+    companion object {
+        fun fromAndroidColor(color: Color): HSVColor {
+            val hsv = FloatArray(3)
+            android.graphics.Color.RGBToHSV(color.red.toInt(), color.green.toInt(), color.blue.toInt(), hsv)
+            return HSVColor(
+                map(hsv[0], 0f, 360f, 0f, 255f).toInt(),
+                map(hsv[1], 0f, 1f, 0f, 255f).toInt(),
+                map(hsv[2], 0f, 1f, 0f, 255f).toInt(),
+            )
+        }
+    }
     fun getAndroidColor(): Color {
         androidColor?.let { return it }
 
@@ -23,4 +34,5 @@ class HSVColor(
             map(value.toFloat(), 0f, 255f, 0f, 1f),
         )
     }
+
 }

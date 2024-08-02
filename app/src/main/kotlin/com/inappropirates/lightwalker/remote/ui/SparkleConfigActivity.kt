@@ -6,8 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.inappropirates.lightwalker.remote.config.Preferences
+import me.zhanghai.compose.preference.Preference
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
-import me.zhanghai.compose.preference.sliderPreference
 
 class SparkleConfigActivity : ConfigActivity() {
     override val name = "Sparkle"
@@ -16,38 +17,29 @@ class SparkleConfigActivity : ConfigActivity() {
     override fun ConfigContent() {
         ProvidePreferenceLocals {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                sliderPreference(
-                    key = "sparkleFadeRate",
+                sendingSliderPreference(
+                    pref = Preferences.sparkleFadeRate,
                     defaultValue = 5F,
-                    title = { Text("fade rate") },
-                    valueRange = 1f..60f,
-                    summary = { Text("%.1f".format(it)) },
+                    valueRange = 1F..60F
                 )
-                sliderPreference(
-                    key = "sparkleFlashLength",
+                sendingSliderPreference(
+                    pref = Preferences.sparkleFlashLength,
                     defaultValue = 525F,
-                    title = { Text("flash length") },
-                    valueRange = 0f..1000f,
-                    summary = { Text("%.1f".format(it)) },
+                    valueRange = 0F..1000F,
                 )
-                sliderPreference(
-                    key = "sparkleSparkleLength",
+                sendingSliderPreference(
+                    pref = Preferences.sparkleSparkleLength,
                     defaultValue = 575F,
-                    title = { Text("sparkle length") },
-                    valueRange = 100f..2000f,
-                    summary = { Text("%.1f".format(it)) },
+                    valueRange = 100F..2000F,
                 )
-                sliderPreference(
-                    key = "sparkleMinValue",
+                sendingSliderPreference(
+                    pref = Preferences.sparkleMinValue,
                     defaultValue = 50F,
-                    title = { Text("sparkle min value") },
-                    valueRange = 0f..255f,
-                    summary = { Text("%.1f".format(it)) },
+                    valueRange = 0F..255F,
                 )
                 colorPreference(
-                    key = "sparkleFootFlashColor",
+                    pref = Preferences.sparkleFootFlashColor,
                     defaultValue = Color.Magenta.toHexString(),
-                    title = { Text("foot flash color") },
                 )
             }
         }
