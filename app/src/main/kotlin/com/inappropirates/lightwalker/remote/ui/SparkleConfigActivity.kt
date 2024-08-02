@@ -41,6 +41,10 @@ class SparkleConfigActivity : ConfigActivity() {
                     pref = Preferences.sparkleFootFlashColor,
                     defaultValue = Color.Magenta.toHexString(),
                 )
+                colorPreference(
+                    pref = Preferences.sparkleSparkleColor,
+                    defaultValue = Color.Magenta.toHexString(),
+                )
             }
         }
     }

@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.compose.runtime.mutableStateOf
 import com.inappropirates.lightwalker.remote.ui.MandyActivity
 import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.ui.RainbowConfigActivity
 import com.inappropirates.lightwalker.remote.ui.SparkleConfigActivity
 
 object ModeManager {
@@ -12,7 +13,7 @@ object ModeManager {
         Mode("main", enabled = false),
         Mode("mandy"),
         Mode("sparkle", configActivity = SparkleConfigActivity::class.java),
-        Mode("rainbow"),
+        Mode("rainbow", configActivity = RainbowConfigActivity::class.java),
         Mode("zebra"),
         Mode("chaos"),
         Mode("flames"),
