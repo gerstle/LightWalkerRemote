@@ -34,8 +34,11 @@
 
         <activity android:name=".ui.BubbleConfigActivity" android:exported="false" />
         <activity android:name=".ui.ChaosConfigActivity" android:exported="false" />
+        <activity android:name=".ui.EqualizerConfigActivity" android:exported="false" />
+        <activity android:name=".ui.FlamesConfigActivity" android:exported="false" />
         <activity android:name=".ui.RainbowConfigActivity" android:exported="false" />
         <activity android:name=".ui.SparkleConfigActivity" android:exported="false" />
+        <activity android:name=".ui.ZebraConfigActivity" android:exported="false" />
     </application>
 
 </manifest>

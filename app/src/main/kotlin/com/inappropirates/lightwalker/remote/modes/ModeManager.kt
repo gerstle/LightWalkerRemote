@@ -7,8 +7,11 @@ import com.inappropirates.lightwalker.remote.ui.MandyActivity
 import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
 import com.inappropirates.lightwalker.remote.ui.BubbleConfigActivity
 import com.inappropirates.lightwalker.remote.ui.ChaosConfigActivity
+import com.inappropirates.lightwalker.remote.ui.EqualizerConfigActivity
+import com.inappropirates.lightwalker.remote.ui.FlamesConfigActivity
 import com.inappropirates.lightwalker.remote.ui.RainbowConfigActivity
 import com.inappropirates.lightwalker.remote.ui.SparkleConfigActivity
+import com.inappropirates.lightwalker.remote.ui.ZebraConfigActivity
 
 object ModeManager {
     val modes = listOf(
@@ -16,10 +19,10 @@ object ModeManager {
         Mode("mandy"),
         Mode("sparkle", configActivity = SparkleConfigActivity::class.java),
         Mode("rainbow", configActivity = RainbowConfigActivity::class.java),
-        Mode("zebra"),
+        Mode("zebra", configActivity = ZebraConfigActivity::class.java),
         Mode("chaos", configActivity = ChaosConfigActivity::class.java),
-        Mode("flames"),
-        Mode("equalizer"),
+        Mode("flames", configActivity = FlamesConfigActivity::class.java),
+        Mode("equalizer", configActivity = EqualizerConfigActivity::class.java),
         Mode("bubble", configActivity = BubbleConfigActivity::class.java),
         Mode("gravity", enabled = false)
     )

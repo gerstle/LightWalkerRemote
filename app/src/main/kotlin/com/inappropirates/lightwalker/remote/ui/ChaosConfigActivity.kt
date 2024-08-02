@@ -11,7 +11,7 @@ import me.zhanghai.compose.preference.Preference
 import me.zhanghai.compose.preference.ProvidePreferenceLocals
 
 class ChaosConfigActivity : ConfigActivity() {
-    override val name = "Sparkle"
+    override val name = "Chaos"
 
     @Composable
     override fun ConfigContent() {
