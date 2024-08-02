@@ -2,11 +2,9 @@ package com.inappropirates.lightwalker.remote.bluetooth
 
 import android.bluetooth.BluetoothProfile
 import android.content.Context
-import android.graphics.Color
 import android.os.Handler
 import android.os.Message
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import com.inappropirates.lightwalker.remote.util.Util.TAG

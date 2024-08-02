@@ -44,15 +44,7 @@ class GattCallbackHandler internal constructor(
                 txChar!!.setValue("initial load\r")
             }
 
-            val rxChar: BluetoothGattCharacteristic = service.getCharacteristic(
-                RX_CHARACTERISTIC_UUID
-            )
-            if (rxChar == null) {
-                Log.e(TAG, "Rx characteristic not found!")
-                gatt.disconnect()
-                return
-            }
-
+            val rxChar: BluetoothGattCharacteristic = service.getCharacteristic(RX_CHARACTERISTIC_UUID)
             gatt.setCharacteristicNotification(rxChar, true)
             val descriptor: BluetoothGattDescriptor = rxChar.getDescriptor(
                 CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR_UUID

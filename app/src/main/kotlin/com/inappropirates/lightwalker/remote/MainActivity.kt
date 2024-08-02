@@ -57,9 +57,9 @@ class MainActivity : ComponentActivity() {
                     }
                 ) {
                     MainContainer(this)
-                    checkPermission("android.permission.BLUETOOTH", 1);
-                    checkPermission("android.permission.BLUETOOTH_CONNECT", 2);
-                    checkPermission("android.permission.BLUETOOTH_SCAN", 3);
+                    checkPermission("android.permission.BLUETOOTH", 1)
+                    checkPermission("android.permission.BLUETOOTH_CONNECT", 2)
+                    checkPermission("android.permission.BLUETOOTH_SCAN", 3)
                 }
             }
         }

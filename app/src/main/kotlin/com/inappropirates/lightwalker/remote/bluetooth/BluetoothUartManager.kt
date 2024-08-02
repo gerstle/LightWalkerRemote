@@ -1,7 +1,6 @@
 package com.inappropirates.lightwalker.remote.bluetooth
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt

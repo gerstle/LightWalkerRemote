@@ -1,31 +1,22 @@
 package com.inappropirates.lightwalker.remote.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -33,34 +24,23 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
-import com.github.skydoves.colorpicker.compose.AlphaTile
-import com.github.skydoves.colorpicker.compose.HsvColorPicker
-import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import me.zhanghai.compose.preference.BasicPreference
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.rememberPreferenceState
 import java.util.UUID
-
 
 inline fun LazyListScope.colorPreference(
     key: String,
@@ -70,31 +50,18 @@ inline fun LazyListScope.colorPreference(
     crossinline rememberState: @Composable () -> MutableState<String> = {
         rememberPreferenceState(key, defaultValue)
     },
-    crossinline rememberColorState: @Composable (String) -> MutableState<String> = {
-        remember { mutableStateOf(it) }
-    },
     crossinline enabled: (String) -> Boolean = { true },
-    noinline icon: @Composable ((String) -> Unit)? = null,
-    noinline summary: @Composable ((String) -> Unit)? = null,
-    noinline valueText: @Composable ((String) -> Unit)? = null,
-    resultLauncher: ActivityResultLauncher<Intent>? = null
 ) {
     item(key = key, contentType = "ColorPreference") {
         val state = rememberState()
         val value by state
-        val sliderState = rememberColorState(value)
-        val sliderValue by sliderState
 
         ColorPreference(
             key = key,
             state = state,
-            title = { title(sliderValue) },
+            title = { title(value) },
             modifier = modifier,
-            sliderState = sliderState,
             enabled = enabled(value),
-            icon = icon?.let { { it(sliderValue) } },
-            summary = summary?.let { { it(sliderValue) } },
-            valueText = valueText?.let { { it(sliderValue) } }
         )
     }
 }
@@ -105,26 +72,16 @@ fun ColorPreference(
     state: MutableState<String>,
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    sliderState: MutableState<String> = remember { mutableStateOf(state.value) },
     enabled: Boolean = true,
-    icon: @Composable (() -> Unit)? = null,
-    summary: @Composable (() -> Unit)? = null,
-    valueText: @Composable (() -> Unit)? = null
 ) {
     var value by state
-    var sliderValue by sliderState
     ColorPreference(
         key = key,
         value = value,
         onValueChange = { value = it },
-        sliderValue = sliderValue,
-        onSliderValueChange = { sliderValue = it },
         title = title,
         modifier = modifier,
         enabled = enabled,
-        icon = icon,
-        summary = summary,
-        valueText = valueText
     )
 }
 
@@ -134,17 +91,11 @@ fun ColorPreference(
     key: String,
     value: String,
     onValueChange: (String) -> Unit,
-    sliderValue: String,
-    onSliderValueChange: (String) -> Unit,
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    icon: @Composable (() -> Unit)? = null,
-    summary: @Composable (() -> Unit)? = null,
-    valueText: @Composable (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    var lastValue = remember { mutableStateOf(value) }
 
     val launcher = context.getActivity()!!.registerActivityResultLauncher(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -159,48 +110,38 @@ fun ColorPreference(
         }
     )
 
-
-    SideEffect {
-        if (value != lastValue.value) {
-            onSliderValueChange(value)
-            lastValue.value = value
-        }
-    }
-
     BasicPreference(
         textContainer = {
-            Column {
-                val theme = LocalPreferenceTheme.current
-                Column(
-                    modifier =
-                    Modifier.padding(
+            val theme = LocalPreferenceTheme.current
+            Column(
+                modifier =
+                Modifier
+                    .padding(
                         theme.padding.copy(
-                            start = if (icon != null) 8.dp else Dp.Unspecified,
+                            start = Dp.Unspecified,
                             bottom = 0.dp
                         )
                     )
-                ) {
-                    TitleContainer(title = title, enabled = enabled)
-                }
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CompositionLocalProvider(
                         LocalMinimumInteractiveComponentEnforcement provides false
                     ) {
-                        // onValueChangeFinished() may be invoked before a recomposition has
-                        // happened for onValueChange(), for example in the clicking case, so make
-                        // onValueChange() share the latest value to onValueChangeFinished().
-                        var latestSliderValue = sliderValue
+                        TitleContainer(title = title, enabled = enabled)
+                        Spacer(Modifier.weight(1f))
                         IconButton(
                             onClick = {
                                 Intent(context, ColorPickerActivity::class.java)
                                     .also {
                                         it.putExtra("key", key)
+                                        it.putExtra("color", value)
                                         launcher.launch(it)
                                     }
                             },
                             modifier =
                             Modifier.padding(
-                                theme.padding.copy(start = theme.horizontalSpacing).offset((-12).dp)
+                                theme.padding.copy(start = theme.horizontalSpacing)
+                                    .offset((-12).dp)
                             ),
                             enabled = enabled,
                             colors =
@@ -214,7 +155,7 @@ fun ColorPreference(
                                         .width(150.dp)
                                         .height(50.dp)
                                         .padding(5.dp),
-                                    color = Color.fromHex(lastValue.value)
+                                    color = Color.fromHex(value)
                                 ) {}
                             }
                         )
@@ -224,13 +165,6 @@ fun ColorPreference(
         },
         modifier = modifier,
         enabled = enabled,
-        iconContainer = {
-            IconContainer(
-                icon = icon,
-                enabled = enabled,
-                excludedEndPadding = 8.dp
-            )
-        }
     )
 }
 
@@ -242,32 +176,6 @@ fun TitleContainer(title: @Composable () -> Unit, enabled: Boolean) {
                 theme.titleColor.let { if (enabled) it else it.copy(alpha = theme.disabledOpacity) }
     ) {
         ProvideTextStyle(value = theme.titleTextStyle, content = title)
-    }
-}
-
-@Composable
-fun IconContainer(
-    icon: @Composable (() -> Unit)?,
-    enabled: Boolean,
-    excludedEndPadding: Dp = 0.dp
-) {
-    if (icon != null) {
-        val theme = LocalPreferenceTheme.current
-        Box(
-            modifier =
-            Modifier
-                .widthIn(min = theme.iconContainerMinWidth - excludedEndPadding)
-                .padding(theme.padding.copy(end = 0.dp)),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            CompositionLocalProvider(
-                LocalContentColor provides
-                        theme.iconColor.let {
-                            if (enabled) it else it.copy(alpha = theme.disabledOpacity)
-                        },
-                content = icon
-            )
-        }
     }
 }
 
@@ -305,7 +213,7 @@ private class CopiedPaddingValues(
         if (this === other) {
             return true
         }
-        if (other !is com.inappropirates.lightwalker.remote.ui.CopiedPaddingValues) {
+        if (other !is CopiedPaddingValues) {
             return false
         }
         return start == other.start &&

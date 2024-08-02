@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.inappropirates.lightwalker.remote.ui.ConfigActivity
 
 
 @Composable
@@ -31,7 +30,7 @@ fun ModeListView(modeState: MutableState<Mode>) {
     LazyColumn(
         contentPadding = PaddingValues(top = 120.dp)
     ) {
-        itemsIndexed(ModeManager.modes.filter { it.enabled }) { index, mode ->
+        itemsIndexed(ModeManager.modes.filter { it.enabled }) { _, mode ->
             val context = LocalContext.current
             Card(
                 onClick = {

@@ -1,9 +1,6 @@
 package com.inappropirates.lightwalker.remote.util
 
-import android.graphics.Color
 import com.inappropirates.lightwalker.remote.ui.HSVColor
-import com.inappropirates.lightwalker.remote.util.Util.map
-import java.util.Locale
 
 object PropertyFormatter {
     private const val COLOR_ROUND_VALUE = 17

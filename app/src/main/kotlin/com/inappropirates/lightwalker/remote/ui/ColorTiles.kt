@@ -2,10 +2,8 @@ package com.inappropirates.lightwalker.remote.ui
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Surface
@@ -46,7 +44,6 @@ private val colors: List<HSVColor> = listOf(
 @Composable
 fun ColorTile(
     modifier: Modifier = Modifier,
-    name: String,
     color: HSVColor,
     colorState: MutableState<HSVColor?>
 ) {
@@ -59,9 +56,9 @@ fun ColorTile(
             colorState.value = color
 
             var preference: Preferences? = null
-            if (ModeManager.modeState.value.name.equals("sparkle"))
+            if (ModeManager.modeState.value.name == "sparkle")
                 preference = Preferences.sparkleSparkleColor
-            else if (ModeManager.modeState.value.name.equals("zebra")) {
+            else if (ModeManager.modeState.value.name == "zebra") {
                 preference = Preferences.zebraColorOne
             }
 
@@ -89,7 +86,6 @@ fun ColorTilesGrid(
         items(colors) {
             ColorTile(
                 Modifier.aspectRatio(1f),
-                it.name ?: "",
                 it,
                 colorState
             )

@@ -2,16 +2,17 @@ package com.inappropirates.lightwalker.remote.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -27,16 +28,13 @@ import com.inappropirates.lightwalker.remote.ui.theme.RemoteTheme
 
 
 class ColorPickerActivity : ComponentActivity() {
-
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val preferences =
-            getSharedPreferences("${application.packageName}_preferences", MODE_PRIVATE)
         val key = intent.extras?.getString("key")!!
-        val color = mutableStateOf(getColor(preferences, key, Color.Magenta))
+        val color = mutableStateOf(Color.fromHex(intent.extras?.getString("color")!!))
         val activity = this
 
         enableEdgeToEdge()
@@ -48,7 +46,7 @@ class ColorPickerActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(
-                                    text = "Color Picker",
+                                    text = key,
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center,
                                     color = Color.Blue
@@ -59,38 +57,25 @@ class ColorPickerActivity : ComponentActivity() {
                 ) {
                     Column {
                         Spacer(modifier = Modifier.padding(top = 104.dp))
-                        Text(color.value.toHexString())
-                        ColorPicker2(color)
-                        Button(onClick = {
-                            //setColor(preferences, key, color.value)
-                            Intent()
-                                .also {
-                                    it.putExtra("color", color.value.toHexString())
-                                    setResult(RESULT_OK, it)
-                                }
-                            activity.finish()
-                        }) {
-                            Text("done!")
+                        ColorPicker(color)
+                        Row {
+                            Spacer(Modifier.weight(1f))
+                            Button(onClick = {
+                                Intent()
+                                    .also {
+                                        it.putExtra("color", color.value.toHexString())
+                                        setResult(RESULT_OK, it)
+                                    }
+                                activity.finish()
+                            }) {
+                                Text("done", Modifier.width(120.dp), textAlign = TextAlign.Center)
+                            }
+                            Spacer(Modifier.weight(1f))
                         }
                     }
                 }
             }
         }
-    }
-
-    fun getColor(preferences: SharedPreferences, key: String, default: Color): Color =
-        preferences
-            .getString(key, default.toHexString())
-            ?.let { Color.fromHex(it) }
-            ?: throw RuntimeException("failed to get color")
-
-    fun setColor(preferences: SharedPreferences, key: String, color: Color) {
-        preferences
-            .edit()
-            .also {
-                it.putString(key, color.toHexString())
-                it.commit()
-            }
     }
 }
 
