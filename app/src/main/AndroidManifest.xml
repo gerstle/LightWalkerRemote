@@ -33,8 +33,9 @@
         <activity android:name=".ui.ColorPickerActivity" android:label="@string/color" />
 
         <activity android:name=".ui.BubbleConfigActivity" android:exported="false" />
-        <activity android:name=".ui.SparkleConfigActivity" android:exported="false" />
+        <activity android:name=".ui.ChaosConfigActivity" android:exported="false" />
         <activity android:name=".ui.RainbowConfigActivity" android:exported="false" />
+        <activity android:name=".ui.SparkleConfigActivity" android:exported="false" />
     </application>
 
 </manifest>

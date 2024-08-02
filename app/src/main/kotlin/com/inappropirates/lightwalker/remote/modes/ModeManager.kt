@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.inappropirates.lightwalker.remote.ui.MandyActivity
 import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
 import com.inappropirates.lightwalker.remote.ui.BubbleConfigActivity
+import com.inappropirates.lightwalker.remote.ui.ChaosConfigActivity
 import com.inappropirates.lightwalker.remote.ui.RainbowConfigActivity
 import com.inappropirates.lightwalker.remote.ui.SparkleConfigActivity
 
@@ -16,7 +17,7 @@ object ModeManager {
         Mode("sparkle", configActivity = SparkleConfigActivity::class.java),
         Mode("rainbow", configActivity = RainbowConfigActivity::class.java),
         Mode("zebra"),
-        Mode("chaos"),
+        Mode("chaos", configActivity = ChaosConfigActivity::class.java),
         Mode("flames"),
         Mode("equalizer"),
         Mode("bubble", configActivity = BubbleConfigActivity::class.java),
