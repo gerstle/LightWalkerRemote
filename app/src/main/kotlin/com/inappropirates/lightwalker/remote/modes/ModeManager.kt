@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.compose.runtime.mutableStateOf
 import com.inappropirates.lightwalker.remote.ui.MandyActivity
 import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.ui.BubbleConfigActivity
 import com.inappropirates.lightwalker.remote.ui.RainbowConfigActivity
 import com.inappropirates.lightwalker.remote.ui.SparkleConfigActivity
 
@@ -18,7 +19,7 @@ object ModeManager {
         Mode("chaos"),
         Mode("flames"),
         Mode("equalizer"),
-        Mode("bubble", enabled = false),
+        Mode("bubble", configActivity = BubbleConfigActivity::class.java),
         Mode("gravity", enabled = false)
     )
     val modeMap: Map<String, Mode> = modes.associateBy { it.name }
