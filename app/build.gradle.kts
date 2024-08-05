@@ -45,6 +45,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/*.md"
         }
     }
 }
@@ -78,4 +79,5 @@ dependencies {
     implementation(libs.compose.colorpicker)
 
     implementation("org.apache.commons:commons-lang3:3.15.0")
+    implementation("com.github.LeandroSQ:android-ble-made-easy:1.9.2")
 }

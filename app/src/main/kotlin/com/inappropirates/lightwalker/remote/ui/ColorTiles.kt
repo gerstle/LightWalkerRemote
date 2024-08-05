@@ -11,14 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.bluetooth.Bt
 import com.inappropirates.lightwalker.remote.config.Preferences
 import com.inappropirates.lightwalker.remote.modes.ModeManager
 import com.inappropirates.lightwalker.remote.util.PropertyFormatter
 import com.inappropirates.lightwalker.remote.util.Util.TAG
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private val colors: List<HSVColor> = listOf(
     HSVColor(192, 255, 255, "purple"),
@@ -47,10 +50,15 @@ fun ColorTile(
     color: HSVColor,
     colorState: MutableState<HSVColor?>
 ) {
+    val coroutineScope = rememberCoroutineScope()
     Surface(
         modifier = modifier,
         color = color.getAndroidColor(),
-        border = if (color == colorState.value) { BorderStroke(2.dp, Color.Magenta) } else { null },
+        border = if (color == colorState.value) {
+            BorderStroke(2.dp, Color.Magenta)
+        } else {
+            null
+        },
         onClick = {
             Log.d(TAG, color.name + " clicked!")
             colorState.value = color
@@ -63,10 +71,9 @@ fun ColorTile(
             }
 
             preference?.let {
-                BluetoothUartManager.sendSetting(
-                    preference.toString(),
-                    PropertyFormatter.getStringVal("Color", color)!!
-                )
+                coroutineScope.launch(Dispatchers.IO) {
+                    Bt.send(preference.toString(), PropertyFormatter.getStringVal("Color", color))
+                }
             }
         }
     ) {
@@ -77,7 +84,7 @@ fun ColorTile(
 fun ColorTilesGrid(
     modifier: Modifier = Modifier,
 ) {
-    val colorState = remember { mutableStateOf<HSVColor?>(null)}
+    val colorState = remember { mutableStateOf<HSVColor?>(null) }
 
     LazyVerticalGrid(
         modifier = modifier,

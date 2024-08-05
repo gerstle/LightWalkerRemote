@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.inappropirates.lightwalker.remote.modes.ModeManager
 import com.inappropirates.lightwalker.remote.ui.theme.RemoteTheme
 
 abstract class ConfigActivity : ComponentActivity() {
@@ -30,7 +29,6 @@ abstract class ConfigActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        ModeManager.setMode(this, "zebra")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

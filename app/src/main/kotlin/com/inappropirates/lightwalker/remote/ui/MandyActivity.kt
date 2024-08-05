@@ -1,7 +1,6 @@
 package com.inappropirates.lightwalker.remote.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,16 +25,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.inappropirates.lightwalker.remote.modes.ModeManager
 import com.inappropirates.lightwalker.remote.ui.theme.RemoteTheme
+import kotlinx.coroutines.launch
 
 class MandyActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        ModeManager.setMode(this, "zebra")
-        val context: Context = this
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            ModeManager.setMode(this@MandyActivity, "zebra")
+        }
+
         enableEdgeToEdge()
         setContent {
             RemoteTheme {
@@ -67,7 +71,7 @@ class MandyActivity : ComponentActivity() {
                                         selected = (text == selectedOption),
                                         onClick = {
                                             onOptionSelected(text)
-                                            ModeManager.setMode(context, text)
+                                            lifecycleScope.launch { ModeManager.setMode(this@MandyActivity, text) }
                                         }
                                     )
                                     .padding(horizontal = 8.dp),
@@ -77,7 +81,7 @@ class MandyActivity : ComponentActivity() {
                                     selected = (text == selectedOption),
                                     onClick = {
                                         onOptionSelected(text)
-                                        ModeManager.setMode(context, text)
+                                        lifecycleScope.launch { ModeManager.setMode(this@MandyActivity, text) }
                                     }
                                 )
                                 Text(

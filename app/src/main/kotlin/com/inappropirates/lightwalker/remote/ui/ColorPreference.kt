@@ -31,6 +31,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,10 +40,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.bluetooth.Bt
 import com.inappropirates.lightwalker.remote.config.Preferences
 import com.inappropirates.lightwalker.remote.config.title
 import com.inappropirates.lightwalker.remote.util.PropertyFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.BasicPreference
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.rememberPreferenceState
@@ -101,6 +104,7 @@ fun ColorPreference(
     enabled: Boolean = true,
 ) {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     val launcher = context.getActivity()!!.registerActivityResultLauncher(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -112,7 +116,9 @@ fun ColorPreference(
                 ?.let {
                     onValueChange(it)
                     val color = HSVColor.fromAndroidColor(Color.fromHex(it))
-                    BluetoothUartManager.sendSetting(key, PropertyFormatter.getStringVal(key, color))
+                    coroutineScope.launch(Dispatchers.IO) {
+                        Bt.send(key, PropertyFormatter.getStringVal(key, color))
+                    }
                 }
         }
     )

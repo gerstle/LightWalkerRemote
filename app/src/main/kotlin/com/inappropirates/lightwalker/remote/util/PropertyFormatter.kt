@@ -1,31 +1,40 @@
 package com.inappropirates.lightwalker.remote.util
 
+import androidx.compose.ui.graphics.Color
 import com.inappropirates.lightwalker.remote.ui.HSVColor
+import com.inappropirates.lightwalker.remote.ui.fromHex
 
 object PropertyFormatter {
     private const val COLOR_ROUND_VALUE = 17
 
-    fun getStringVal(key: String, value: Any): String =
-        when (value) {
-            is Int -> value.toString()
-            is String -> value
-            is Float -> "%.0f".format(value)
+    fun getStringVal(key: String, value: Any): String {
+        val it = if (value is String && value.startsWith("#")) {
+            HSVColor.fromAndroidColor(Color.fromHex(value))
+        } else {
+            value
+        }
+
+        return when (it) {
+            is Int -> it.toString()
+            is String -> it
+            is Float -> "%.0f".format(it)
             is HSVColor -> {
                 val builder = StringBuilder()
-                builder.append(value.hue)
+                builder.append(it.hue)
                     .append(",")
-                    .append(value.sat)
+                    .append(it.sat)
                     .append(",")
-                    .append(value.value)
+                    .append(it.value)
                 builder.toString()
             }
 
             is Boolean -> {
-                if (value) "1" else "0"
+                if (it) "1" else "0"
             }
 
             else -> throw RuntimeException("Unhandled property type! key: $key value: $value type: ${value.javaClass}")
         }
+    }
 
     private fun roundColor(color: Int): Int {
         val modValue = color % COLOR_ROUND_VALUE

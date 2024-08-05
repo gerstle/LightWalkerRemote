@@ -16,6 +16,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -23,10 +24,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun ModeListView(modeState: MutableState<Mode>) {
+    val coroutineScope = rememberCoroutineScope()
     LazyColumn(
         contentPadding = PaddingValues(top = 120.dp)
     ) {
@@ -40,14 +44,16 @@ fun ModeListView(modeState: MutableState<Mode>) {
                         Toast.LENGTH_SHORT,
                     ).show()
 
-                    ModeManager.setMode(context, mode)
+                    coroutineScope.launch(Dispatchers.IO) {
+                        ModeManager.setMode(context, mode)
+                    }
                 },
                 modifier = Modifier.padding(8.dp),
 
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = if (modeState.value == mode) {
-                        Color.Magenta
+                        Color.LightGray
                     } else {
                         Color.DarkGray
                     }
@@ -65,7 +71,7 @@ fun ModeListView(modeState: MutableState<Mode>) {
                         fontSize = 30.sp,
                         text = mode.name,
                         modifier = Modifier.padding(4.dp),
-                        color = Color.Blue,
+                        color = Color.Magenta,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.ExtraBold
                     )

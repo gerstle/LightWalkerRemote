@@ -6,12 +6,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.bluetooth.Bt
 import com.inappropirates.lightwalker.remote.config.Preferences
 import com.inappropirates.lightwalker.remote.config.title
 import com.inappropirates.lightwalker.remote.util.PropertyFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.rememberPreferenceState
 
 inline fun LazyListScope.sendingCheckboxPreference(
@@ -51,10 +54,13 @@ fun SendingCheckboxPreference(
     summary: @Composable (() -> Unit)? = null
 ) {
     var value by state
+    val coroutineScope = rememberCoroutineScope()
     me.zhanghai.compose.preference.CheckboxPreference(
         value = value,
         onValueChange = {
-            BluetoothUartManager.sendSetting(key, PropertyFormatter.getStringVal(key, it))
+            coroutineScope.launch(Dispatchers.IO) {
+                Bt.send(key, PropertyFormatter.getStringVal(key, it))
+            }
             value = it
         },
         title = title,

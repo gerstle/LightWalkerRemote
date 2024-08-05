@@ -1,5 +1,7 @@
 package com.inappropirates.lightwalker.remote
 
+import android.Manifest
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
@@ -11,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,15 +28,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothStatusHandler
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
-import com.inappropirates.lightwalker.remote.bluetooth.BtButton
+import com.inappropirates.lightwalker.remote.bluetooth.Bt
 import com.inappropirates.lightwalker.remote.modes.ModeListView
 import com.inappropirates.lightwalker.remote.modes.ModeManager
 import com.inappropirates.lightwalker.remote.ui.theme.RemoteTheme
+import quevedo.soares.leandro.blemadeeasy.BLE
 
 class MainActivity : ComponentActivity() {
-
+    private val connected = mutableStateOf(false)
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
@@ -56,31 +59,49 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-                    MainContainer(this)
-                    checkPermission("android.permission.BLUETOOTH", 1)
-                    checkPermission("android.permission.BLUETOOTH_CONNECT", 2)
-                    checkPermission("android.permission.BLUETOOTH_SCAN", 3)
+                    MainContainer()
+                    checkPermission(Manifest.permission.BLUETOOTH, 1)
+                    checkPermission(Manifest.permission.BLUETOOTH_SCAN, 2)
+                    checkPermission(Manifest.permission.BLUETOOTH_CONNECT, 3)
+                    checkPermission(Manifest.permission.BLUETOOTH_ADMIN, 4)
                 }
             }
         }
+
+        BLE(this)
+            .apply {
+                // verbose = true// Optional variable for debugging purposes
+            }
+            .also { Bt.connect(it, this@MainActivity, connected) }
     }
 
     @Composable
-    fun MainContainer(context: Context) {
-        val connected = remember { mutableStateOf(false) }
+    fun MainContainer() {
+        val connected = remember { connected }
         val mode = remember { ModeManager.modeState }
 
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     ModeListView(mode)
-                    BtButton(connected)
 
-                    BluetoothStatusHandler(context, connected)
-                        .also {
-                            BluetoothUartManager.setHandler(it)
-                            BluetoothUartManager.updateStatus()
+                    Button(
+                        onClick = {},
+                        enabled = false,
+                        colors = if (connected.value) {
+                            ButtonDefaults.buttonColors(containerColor = Color.Green)
+                        } else {
+                            ButtonDefaults.buttonColors(containerColor = Color.Red)
                         }
+                    ) {
+                        Text(
+                            text = if (connected.value) {
+                                "connected"
+                            } else {
+                                "disconnected"
+                            }
+                        )
+                    }
                 }
             }
         }

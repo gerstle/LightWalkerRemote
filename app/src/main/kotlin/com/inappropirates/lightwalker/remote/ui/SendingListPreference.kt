@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,10 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import com.inappropirates.lightwalker.remote.bluetooth.BluetoothUartManager
+import com.inappropirates.lightwalker.remote.bluetooth.Bt
 import com.inappropirates.lightwalker.remote.config.Preferences
 import com.inappropirates.lightwalker.remote.config.title
 import com.inappropirates.lightwalker.remote.util.PropertyFormatter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.ListPreferenceType
 import me.zhanghai.compose.preference.rememberPreferenceState
 
@@ -81,11 +84,14 @@ fun SendingListPreference(
         ListPreferenceDefaults.item(type, valueToText)
 ) {
     var value by state
+    val coroutineScope = rememberCoroutineScope()
     me.zhanghai.compose.preference.ListPreference(
         value = value,
         onValueChange = {
             val index = values.indexOf(it)
-            BluetoothUartManager.sendSetting(key, PropertyFormatter.getStringVal(key, index))
+            coroutineScope.launch(Dispatchers.IO) {
+                Bt.send(key, PropertyFormatter.getStringVal(key, index))
+            }
             value = it
         },
         values = values,
