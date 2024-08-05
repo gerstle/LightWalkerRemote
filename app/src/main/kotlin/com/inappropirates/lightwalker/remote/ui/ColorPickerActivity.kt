@@ -6,16 +6,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.mutableStateOf
@@ -61,6 +64,24 @@ class ColorPickerActivity : ComponentActivity() {
                     Column {
                         Spacer(modifier = Modifier.padding(top = 104.dp))
                         ColorPicker(color)
+                        Row {
+                            Surface(
+                                modifier = Modifier
+                                    .width(150.dp)
+                                    .height(100.dp)
+                                    .padding(5.dp)
+                                    .border(1.dp, Color.White),
+                                color = Color.Black,
+                                onClick = {
+                                    Intent()
+                                        .also {
+                                            it.putExtra("color", Color.Black.toHexString())
+                                            setResult(RESULT_OK, it)
+                                        }
+                                    activity.finish()
+                                }
+                            ) {}
+                        }
                         Row {
                             Spacer(Modifier.weight(1f))
                             Button(onClick = {

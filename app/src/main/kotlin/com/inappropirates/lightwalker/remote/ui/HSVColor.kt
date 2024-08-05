@@ -17,11 +17,16 @@ class HSVColor(
     companion object {
         fun fromAndroidColor(color: Color): HSVColor {
             val hsv = FloatArray(3)
-            android.graphics.Color.RGBToHSV(color.red.toInt(), color.green.toInt(), color.blue.toInt(), hsv)
+            android.graphics.Color.RGBToHSV(
+                map(color.red, 0f, 1f, 0f, 255f).toInt(),
+                map(color.green, 0f, 1f, 0f, 255f).toInt(),
+                map(color.blue, 0f, 1f, 0f, 255f).toInt(),
+                hsv
+            )
             return HSVColor(
                 map(hsv[0], 0f, 360f, 0f, 255f).toInt(),
                 map(hsv[1], 0f, 1f, 0f, 255f).toInt(),
-                map(hsv[2], 0f, 1f, 0f, 255f).toInt(),
+                map(hsv[2], 0f, 1f, 0f, 255f).toInt()
             )
         }
     }

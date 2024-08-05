@@ -37,7 +37,7 @@ class MandyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            ModeManager.setMode(this@MandyActivity, "zebra")
+            ModeManager.setMode(this@MandyActivity, "sparkle")
         }
 
         enableEdgeToEdge()
@@ -59,7 +59,7 @@ class MandyActivity : ComponentActivity() {
                     }
                 ) {
                     val radioOptions = listOf("sparkle", "zebra", "rainbow")
-                    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
+                    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
 
                     Column {
                         Spacer(modifier = Modifier.padding(top = 104.dp))
