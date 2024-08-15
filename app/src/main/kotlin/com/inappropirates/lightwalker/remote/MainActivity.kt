@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    ModeListView(mode)
+                    ModeListView(mode, connected)
 
                     Button(
                         onClick = {},

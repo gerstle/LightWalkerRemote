@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -25,15 +26,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun ModeListView(modeState: MutableState<Mode>) {
+fun ModeListView(modeState: MutableState<Mode>, connected: MutableState<Boolean>) {
     val coroutineScope = rememberCoroutineScope()
     LazyColumn(
         contentPadding = PaddingValues(top = 120.dp)
     ) {
+        snapshotFlow { connected.value }
+            .onEach {
+                if (!it) {
+                    modeState.value = ModeManager.modeMap["main"]!!
+                }
+            }
+            .launchIn(coroutineScope)
         itemsIndexed(ModeManager.modes.filter { it.enabled }) { _, mode ->
             val context = LocalContext.current
             Card(
@@ -52,7 +62,7 @@ fun ModeListView(modeState: MutableState<Mode>) {
 
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (modeState.value == mode) {
+                    containerColor = if (connected.value && modeState.value == mode) {
                         Color.LightGray
                     } else {
                         Color.DarkGray
